@@ -7,6 +7,12 @@ const numColumns = 2;
 
 export const AppStyles = {
   color: {
+    
+
+
+
+
+
     main: "#5ea23a",
     text: "#696969",
     title: "#464646",

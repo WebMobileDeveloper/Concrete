@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import Button from "react-native-button";
 import { AppStyles } from "../AppStyles";
 // import firebase from "react-native-firebase";
@@ -31,7 +31,23 @@ class SignupScreen extends React.Component {
   }
 
   onRegister = () => {
-    const { email, password } = this.state;
+    const { fullname, email, password, phone } = this.state;
+    if (!fullname) {
+      Alert.alert("Please input your name!");
+      return;
+    }
+    if (!email) {
+      Alert.alert("Please input your email!");
+      return;
+    }
+    const { navigation } = this.props;
+    const user = {
+      email: "Test@mail.com",
+      fullname: "Test User",
+      phone: "1230-121-2123",
+      appIdentifier: "rn-android-universal-listings"
+    };
+    navigation.dispatch({ type: "Login", user: user });
     // firebase
     //   .auth()
     //   .createUserWithEmailAndPassword(email, password)
@@ -67,12 +83,13 @@ class SignupScreen extends React.Component {
     //     const { code, message } = error;
     //     alert(message);
     //   });
+
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
+        <Text style={[styles.title]}>Create new account</Text>
         <View style={styles.InputContainer}>
           <TextInput
             style={styles.body}
@@ -134,7 +151,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: AppStyles.fontSize.title,
     fontWeight: "bold",
-    color: AppStyles.color.tint,
+    color: AppStyles.color.facebook,
     marginTop: 20,
     marginBottom: 20
   },

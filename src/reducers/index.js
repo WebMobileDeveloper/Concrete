@@ -23,7 +23,7 @@ function nav(state = initialNavState, action) {
       try {
         // firebase.auth().signOut();
         nextState = RootNavigator.router.getStateForAction(
-          NavigationActions.navigate({ routeName: "AuthStack" }),
+          NavigationActions.navigate({ routeName: "AuthStack", key:'Welcome' }),
           state
         );
       } catch (e) {
