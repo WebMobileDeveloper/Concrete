@@ -20,6 +20,5 @@ export default HomeStack = createStackNavigator(
       })
     },
 
-    cardStyle: { backgroundColor: "#FFFFFF" }
   }
 );

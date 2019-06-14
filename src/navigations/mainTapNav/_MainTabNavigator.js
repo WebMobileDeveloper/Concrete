@@ -6,7 +6,7 @@ import HomeStack from './HomeStack';
 import OrderStack from './OrderStack';
 import { AppIcon, AppStyles } from "../../AppStyles";
 
-export default TabNavigator = createBottomTabNavigator(
+export default MainTabNavigator = createBottomTabNavigator(
     {
         Home: { screen: HomeStack, },
         Order: { screen: OrderStack },
@@ -14,7 +14,7 @@ export default TabNavigator = createBottomTabNavigator(
     {
         initialRouteName: "Order",
         defaultNavigationOptions: ({ navigation }) => ({
-            tabBarIcon: ({ focused, tintColor }) => {
+            tabBarIcon: ({ focused, tintColor } ) => {
                 const { routeName } = navigation.state;
                 let iconName;
                 switch (routeName) {

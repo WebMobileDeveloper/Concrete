@@ -175,12 +175,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center"
   },
-  or: {
-    fontFamily: AppStyles.fontName.main,
-    color: "black",
-    marginTop: 40,
-    marginBottom: 10
-  },
   title: {
     fontSize: AppStyles.fontSize.title,
     fontWeight: "bold",
@@ -192,6 +186,12 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     textAlign: "left",
     marginLeft: 20
+  },
+  or: {
+    fontFamily: AppStyles.fontName.main,
+    color: "black",
+    marginTop: 40,
+    marginBottom: 10
   },
   content: {
     paddingLeft: 50,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     color: "red"
   },
   InputContainer: {
-    width: AppStyles.textInputWidth.main,
+    width: AppStyles.textInputWidth.sub,
     marginTop: 30,
     borderWidth: 1,
     borderStyle: "solid",

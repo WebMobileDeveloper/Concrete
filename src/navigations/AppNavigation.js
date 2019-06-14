@@ -1,14 +1,15 @@
 
 import { Animated, Easing } from "react-native";
 import { connect } from "react-redux";
-import {  createStackNavigator,} from "react-navigation";
+import { createDrawerNavigator } from "react-navigation";
 import {
   createReactNavigationReduxMiddleware,
   createReduxContainer
 } from "react-navigation-redux-helpers";
 
+import DrawerContainer from "../components/DrawerContainer";
+import MainTabNavigator from './mainTapNav/_MainTabNavigator';
 import AuthStack from './AuthStack';
-import DrawerStack from './DrawerStack';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -26,20 +27,20 @@ const middleware = createReactNavigationReduxMiddleware(
 
 
 // Manifest of possible screens
-const RootNavigator = createStackNavigator(
+const RootNavigator = createDrawerNavigator(
   {
     AuthStack: { screen: AuthStack },
-    DrawerStack: { screen: DrawerStack }
+    MainTap: { screen: MainTabNavigator },
   },
   {
     // Default config for all screens
     headerMode: "none",
-    initialRouteName: "DrawerStack",
+    initialRouteName: "MainTap",
     // initialRouteName: "AuthStack",
+    drawerPosition: "left",
+    drawerWidth: 200,
+    contentComponent: DrawerContainer,
     transitionConfig: noTransitionConfig,
-    navigationOptions: ({ navigation }) => ({
-      color: "black"
-    })
   }
 );
 

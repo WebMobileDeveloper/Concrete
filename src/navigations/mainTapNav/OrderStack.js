@@ -12,9 +12,7 @@ export default OrderStack = createStackNavigator(
 
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: "red",
       headerTitleStyle: styles.headerTitleStyle
     }),
-    cardStyle: { backgroundColor: "#FFFFFF" }
   }
 );

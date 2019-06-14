@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View, Alert, ScrollView, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, Text, View, } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Button from "react-native-button";
 import { AppStyles } from "../AppStyles";
@@ -109,7 +109,7 @@ class SignupScreen extends React.Component {
             validations={[ValidateTypes.required]} />
 
           <InputField name="phone" type={FieldTypes.phone} placeholder="Phone number" submitted={this.state.submitted} onUpdate={this.updateState}
-            validations={[ValidateTypes.required, ValidateTypes.phone]} />
+            validations={[ValidateTypes.required, ValidateTypes.phone]} maskString="+61 [000] [000] [000]" />
 
           <InputField name="email" type={FieldTypes.email} placeholder="E-mail Address" submitted={this.state.submitted} onUpdate={this.updateState}
             validations={[ValidateTypes.required, ValidateTypes.email]} />

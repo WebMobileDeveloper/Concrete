@@ -40,8 +40,8 @@ export const AppStyles = {
     main: "70%"
   },
   textInputWidth: {
-    main: "80%",
-    sub: "100%",
+    main: "100%",
+    sub: "80%",
   },
   fontName: {
     main: "Noto Sans",
@@ -69,7 +69,8 @@ export const AppIcon = {
     home: require("../assets/icons/home.png"),
     order: require("../assets/icons/order.png"),
     defaultUser: require("../assets/icons/default_user.jpg"),
-    logout: require("../assets/icons/shutdown.png")
+    logout: require("../assets/icons/shutdown.png"),
+    menu: require("../assets/icons/menu.png"),
   }
 };
 

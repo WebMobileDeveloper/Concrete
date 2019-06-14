@@ -2,6 +2,7 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import TextInputMask from 'react-native-text-input-mask';
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 import { AppStyles } from "../AppStyles";
 import { ValidateTypes, FieldTypes } from '../Globals';
@@ -9,6 +10,7 @@ import { ValidateTypes, FieldTypes } from '../Globals';
 
 const phoneReg = /^\d{11}$/;
 const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const dateTimeReg = /[0-1]\d\/[0-3]\d\/\d{4} [0-1]\d:[0-5]\d [aApP][mM]/;
 export default class InputField extends React.Component {
 
     constructor(props) {
@@ -72,8 +74,30 @@ export default class InputField extends React.Component {
 
         this.parentUpdate(value, false);
     }
-    render() {
-        const { type, placeholder, submitted } = this.props;
+    showDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: true });
+    };
+
+    hideDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: false });
+    };
+
+    handleDatePicked = date => {
+        const { type } = this.props;
+        date += '';
+        console.log(date)
+        if (type == FieldTypes.date) {
+            date = date.substring(0, 16);
+
+        } else {
+            date = date.substring(16, 22) + "00";
+        }
+        this.hideDateTimePicker();
+        console.log(date)
+        this.onChangeText(date);
+    };
+    renderChild = () => {
+        const { type, placeholder, maskString, } = this.props;
         let keyboardType = 'default';
         let secureTextEntry = false;
         let autoCorrect = false;
@@ -88,40 +112,75 @@ export default class InputField extends React.Component {
                 secureTextEntry = true;
                 break;
         }
+        switch (type) {
+            case FieldTypes.date:
+            case FieldTypes.time:
+                return (<Text
+                    // onChangeText={this.onChangeText}
+                    onTouchEnd={this.showDateTimePicker}
+                    style={[styles.body, { fontSize: 16, paddingTop: 10, }]}
+                    placeholder={placeholder}
+                    value={this.state.value}
+                    placeholderTextColor={AppStyles.color.grey}
+                    underlineColorAndroid="transparent"
+                    secureTextEntry={secureTextEntry}
+                    keyboardType={keyboardType}
+                    autoCorrect={autoCorrect}
+                >{this.state.value}</Text>)
+            case FieldTypes.phone:
+                return (<TextInputMask
+                    refInput={ref => { this.input = ref }}
+                    onChangeText={(formatted, extracted) => {
+                        console.log("formated", formatted)
+                        console.log("extracted", extracted)
+                        if (type == FieldTypes.phone) this.onChangeText("61" + extracted)
+                    }}
+                    style={styles.body}
+                    placeholder={placeholder}
+                    value={this.state.value}
+                    placeholderTextColor={AppStyles.color.grey}
+                    underlineColorAndroid="transparent"
+                    secureTextEntry={secureTextEntry}
+                    keyboardType={keyboardType}
+                    autoCorrect={autoCorrect}
+                    mask={maskString} />)
+            default:
+                return (<TextInput
+                    onChangeText={this.onChangeText}
+                    style={styles.body}
+                    placeholder={placeholder}
+                    value={this.state.value}
+                    placeholderTextColor={AppStyles.color.grey}
+                    underlineColorAndroid="transparent"
+                    secureTextEntry={secureTextEntry}
+                    keyboardType={keyboardType}
+                    autoCorrect={autoCorrect} />)
+        }
+    }
+    render() {
+        const { submitted, borderRadius, width, marginBottom, type } = this.props;
         return (
             <View style={styles.InputContainer}>
-                <View style={styles.subContainer}>
-                    {(type == FieldTypes.phone) ?
-                        (
-                            <TextInputMask
-                                refInput={ref => { this.input = ref }}
-                                onChangeText={(formatted, extracted) => {
-                                    this.onChangeText("61" + extracted)
-                                }}
-                                style={styles.body}
-                                placeholder={placeholder}
-                                value={this.state.value}
-                                placeholderTextColor={AppStyles.color.grey}
-                                underlineColorAndroid="transparent"
-                                secureTextEntry={secureTextEntry}
-                                keyboardType={keyboardType}
-                                autoCorrect={autoCorrect}
-                                mask={"+61 [000] [000] [000]"} />
-                        ) : (
-                            <TextInput
-                                onChangeText={this.onChangeText}
-                                style={styles.body}
-                                placeholder={placeholder}
-                                value={this.state.value}
-                                placeholderTextColor={AppStyles.color.grey}
-                                underlineColorAndroid="transparent"
-                                secureTextEntry={secureTextEntry}
-                                keyboardType={keyboardType}
-                                autoCorrect={autoCorrect} />
-                        )
-                    }
+                <View style={[styles.subContainer, {
+                    borderRadius: borderRadius == undefined ? AppStyles.borderRadius.main : borderRadius,
+                    width: width == undefined ? AppStyles.textInputWidth.sub : width,
+                }]}>
+                    {this.renderChild()}
                 </View>
-                <Text style={styles.error}>{submitted ? this.state.errorText : ''}</Text>
+
+                <Text style={[styles.error, {
+                    width: width == undefined ? AppStyles.textInputWidth.sub : width,
+                    marginBottom: marginBottom == undefined ? 20 : marginBottom,
+                }]}>{submitted ? this.state.errorText : ''}</Text>
+
+                {(type == FieldTypes.date || type == FieldTypes.time) &&
+                    <DateTimePicker
+                        isVisible={this.state.isDateTimePickerVisible}
+                        onConfirm={this.handleDatePicked}
+                        onCancel={this.hideDateTimePicker}
+                        mode={type}
+                    />}
+
             </View>
         );
     }
@@ -130,13 +189,13 @@ export default class InputField extends React.Component {
 const styles = StyleSheet.create({
     InputContainer: {
         width: AppStyles.textInputWidth.main,
+        // backgroundColor: 'red',
+        alignItems: "center",
     },
     subContainer: {
-        width: AppStyles.textInputWidth.sub,
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: AppStyles.color.grey,
-        borderRadius: AppStyles.borderRadius.main
     },
     body: {
         height: 36,
@@ -147,9 +206,9 @@ const styles = StyleSheet.create({
     error: {
         color: AppStyles.color.error,
         marginTop: 5,
-        marginBottom: 20,
         paddingLeft: 20,
-
+        // backgroundColor:'blue',
+        textAlign: 'left',
     }
 });
 
