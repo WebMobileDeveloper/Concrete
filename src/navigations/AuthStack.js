@@ -15,7 +15,7 @@ export default AuthStack = createStackNavigator(
     Terms: { screen: TermsAndConditions }
   },
   {
-    initialRouteName: "Signup",
+    initialRouteName: "Welcome",
     headerMode: "float",
     navigationOptions: ({ navigation }) => ({
       headerTintColor: "red",

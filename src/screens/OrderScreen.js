@@ -6,9 +6,9 @@ import { AppStyles, } from "../AppStyles";
 import { Configuration } from "../Configuration";
 import HeaderLeft from "../components/HeaderLeft";
 
-class HomeScreen extends React.Component {
+class OrderScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Home",
+    title: "Order / Quote",
     headerLeft: <HeaderLeft navigation={navigation} />
   });
 
@@ -28,7 +28,7 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text style={styles.title}>Welcome {this.props.user.email}</Text>
+        <Text style={styles.title}>Order Screen</Text>
       </ScrollView>
     );
   }
@@ -52,4 +52,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(mapStateToProps)(HomeScreen);
+export default connect(mapStateToProps)(OrderScreen);

@@ -1,28 +1,34 @@
 import React from 'react';
 import { createBottomTabNavigator } from "react-navigation";
 import { Image, Text } from "react-native";
-import FastImage from "react-native-fast-image";
-import { Configuration } from "../Configuration";
+import { Configuration } from "../../Configuration";
 import HomeStack from './HomeStack';
-import { AppIcon, AppStyles } from "../AppStyles";
-import homeImage from "../../assets/icons/home.png";
+import OrderStack from './OrderStack';
+import { AppIcon, AppStyles } from "../../AppStyles";
 
 export default TabNavigator = createBottomTabNavigator(
     {
-        Home: { screen: HomeStack }
+        Home: { screen: HomeStack, },
+        Order: { screen: OrderStack },
     },
     {
+        initialRouteName: "Order",
         defaultNavigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
-                if (routeName === "Home") {
-                    iconName = AppIcon.images.home;
+                switch (routeName) {
+                    case 'Home':
+                        iconName = AppIcon.images.home;
+                        break;
+                    case 'Order':
+                        iconName = AppIcon.images.order;
+                        break;
                 }
                 return (
-                    <Image style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.grey }} source={iconName} />
+                    <Image style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.grey, width: 20, height: 20, resizeMode: "contain" }} source={iconName} />
                 );
-            }
+            },
         }),
         initialLayout: {
             height: 300
@@ -33,6 +39,7 @@ export default TabNavigator = createBottomTabNavigator(
             style: {
                 height: Configuration.home.tab_bar_height
             }
-        }
+        },
+
     }
 );

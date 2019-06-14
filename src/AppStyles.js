@@ -7,7 +7,7 @@ const numColumns = 2;
 
 export const AppStyles = {
   color: {
-    
+    error: '#FF0000',
 
 
 
@@ -40,7 +40,8 @@ export const AppStyles = {
     main: "70%"
   },
   textInputWidth: {
-    main: "80%"
+    main: "80%",
+    sub: "100%",
   },
   fontName: {
     main: "Noto Sans",
@@ -66,6 +67,7 @@ export const AppIcon = {
   },
   images: {
     home: require("../assets/icons/home.png"),
+    order: require("../assets/icons/order.png"),
     defaultUser: require("../assets/icons/default_user.jpg"),
     logout: require("../assets/icons/shutdown.png")
   }

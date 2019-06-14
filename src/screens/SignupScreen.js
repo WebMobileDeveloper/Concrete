@@ -1,8 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
+import { StyleSheet, Text, TextInput, View, Alert, ScrollView, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Button from "react-native-button";
 import { AppStyles } from "../AppStyles";
 // import firebase from "react-native-firebase";
+import { ValidateTypes, FieldTypes } from '../Globals';
+import InputField from "../components/InputField";
 
 class SignupScreen extends React.Component {
   constructor(props) {
@@ -10,11 +13,16 @@ class SignupScreen extends React.Component {
 
     this.state = {
       loading: true,
-      fullname: "",
-      phone: "",
-      email: "",
-      password: ""
+      fields: {
+        fullname: { value: '', error: true, },
+        phone: { value: '', error: true, },
+        email: { value: '', error: true, },
+        password: { value: '', error: true, },
+        confirm: { value: '', error: true, },
+      },
+      submitted: false,
     };
+    this.updateState = this.updateState.bind(this);
   }
 
   componentDidMount() {
@@ -31,14 +39,12 @@ class SignupScreen extends React.Component {
   }
 
   onRegister = () => {
-    const { fullname, email, password, phone } = this.state;
-    if (!fullname) {
-      Alert.alert("Please input your name!");
-      return;
-    }
-    if (!email) {
-      Alert.alert("Please input your email!");
-      return;
+    const { fields } = this.state;
+    this.setState({ submitted: true });
+    for (key in fields) {
+      if (fields[key].error) {
+        return;
+      }
     }
     const { navigation } = this.props;
     const user = {
@@ -48,6 +54,9 @@ class SignupScreen extends React.Component {
       appIdentifier: "rn-android-universal-listings"
     };
     navigation.dispatch({ type: "Login", user: user });
+
+
+
     // firebase
     //   .auth()
     //   .createUserWithEmailAndPassword(email, password)
@@ -85,60 +94,37 @@ class SignupScreen extends React.Component {
     //   });
 
   };
-
+  updateState(name, value, error) {
+    var fields = { ...this.state.fields };
+    fields[name] = { value, error };
+    this.setState({ fields })
+  }
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={[styles.title]}>Create new account</Text>
-        <View style={styles.InputContainer}>
-          <TextInput
-            style={styles.body}
-            placeholder="Full Name"
-            onChangeText={text => this.setState({ fullname: text })}
-            value={this.state.fullname}
-            placeholderTextColor={AppStyles.color.grey}
-            underlineColorAndroid="transparent"
-          />
+      <KeyboardAwareScrollView >
+        <View style={styles.container}>
+          <Text style={[styles.title]}>Create new account</Text>
+
+          <InputField name="fullname" type={FieldTypes.text} placeholder="Full Name" submitted={this.state.submitted} onUpdate={this.updateState}
+            validations={[ValidateTypes.required]} />
+
+          <InputField name="phone" type={FieldTypes.phone} placeholder="Phone number" submitted={this.state.submitted} onUpdate={this.updateState}
+            validations={[ValidateTypes.required, ValidateTypes.phone]} />
+
+          <InputField name="email" type={FieldTypes.email} placeholder="E-mail Address" submitted={this.state.submitted} onUpdate={this.updateState}
+            validations={[ValidateTypes.required, ValidateTypes.email]} />
+
+          <InputField name="password" type={FieldTypes.password} placeholder="Password" submitted={this.state.submitted} onUpdate={this.updateState}
+            validations={[ValidateTypes.required]} />
+
+          <InputField name="confirm" type={FieldTypes.password} placeholder="Confirm password" submitted={this.state.submitted} onUpdate={this.updateState}
+            validations={[ValidateTypes.match]} matchText={this.state.fields.password.value} />
+          <Button
+            containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
+            style={styles.facebookText}
+            onPress={() => this.onRegister()}>Sign Up</Button>
         </View>
-        <View style={styles.InputContainer}>
-          <TextInput
-            style={styles.body}
-            placeholder="Phone Number"
-            onChangeText={text => this.setState({ phone: text })}
-            value={this.state.phone}
-            placeholderTextColor={AppStyles.color.grey}
-            underlineColorAndroid="transparent"
-          />
-        </View>
-        <View style={styles.InputContainer}>
-          <TextInput
-            style={styles.body}
-            placeholder="E-mail Address"
-            onChangeText={text => this.setState({ email: text })}
-            value={this.state.email}
-            placeholderTextColor={AppStyles.color.grey}
-            underlineColorAndroid="transparent"
-          />
-        </View>
-        <View style={styles.InputContainer}>
-          <TextInput
-            style={styles.body}
-            placeholder="Password"
-            secureTextEntry={true}
-            onChangeText={text => this.setState({ password: text })}
-            value={this.state.password}
-            placeholderTextColor={AppStyles.color.grey}
-            underlineColorAndroid="transparent"
-          />
-        </View>
-        <Button
-          containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
-          style={styles.facebookText}
-          onPress={() => this.onRegister()}
-        >
-          Sign Up
-        </Button>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -160,27 +146,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginLeft: 20
   },
-  content: {
-    paddingLeft: 50,
-    paddingRight: 50,
-    textAlign: "center",
-    fontSize: AppStyles.fontSize.content,
-    color: AppStyles.color.text
-  },
-  loginContainer: {
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 30
-  },
-  loginText: {
-    color: AppStyles.color.white
-  },
-  placeholder: {
-    fontFamily: AppStyles.fontName.text,
-    color: "red"
-  },
+
   InputContainer: {
     width: AppStyles.textInputWidth.main,
     marginTop: 30,

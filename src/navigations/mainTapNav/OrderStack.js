@@ -1,14 +1,13 @@
 import { createStackNavigator } from 'react-navigation';
-import HomeScreen from "../screens/HomeScreen";
-import styles from "./_style";
+import OrderScreen from "../../screens/OrderScreen";
+import styles from "../_style";
 
-
-export default HomeStack = createStackNavigator(
+export default OrderStack = createStackNavigator(
   {
-    Home: { screen: HomeScreen }
+    Order: { screen: OrderScreen },
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Order",
     headerMode: "float",
 
     headerLayoutPreset: "center",
