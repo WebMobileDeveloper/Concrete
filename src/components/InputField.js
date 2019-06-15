@@ -10,7 +10,8 @@ import { ValidateTypes, FieldTypes } from '../Globals';
 
 const phoneReg = /^\d{11}$/;
 const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-const dateTimeReg = /[0-1]\d\/[0-3]\d\/\d{4} [0-1]\d:[0-5]\d [aApP][mM]/;
+// const dateTimeReg = /[0-1]\d\/[0-3]\d\/\d{4} [0-1]\d:[0-5]\d [aApP][mM]/;
+var numberReg = /^\d+$/;
 export default class InputField extends React.Component {
 
     constructor(props) {
@@ -69,6 +70,13 @@ export default class InputField extends React.Component {
                         return;
                     }
                     break;
+                case ValidateTypes.number:
+                    if (numberReg.test(value) === false) {
+                        this.setState({ errorText: 'Invalid number!' });
+                        this.parentUpdate(value, true);
+                        return;
+                    }
+                    break;
             }
         }
 
@@ -110,6 +118,9 @@ export default class InputField extends React.Component {
                 break;
             case FieldTypes.password:
                 secureTextEntry = true;
+                break;
+            case FieldTypes.number:
+                keyboardType = "numeric";
                 break;
         }
         switch (type) {
