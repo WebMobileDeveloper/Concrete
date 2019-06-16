@@ -59,7 +59,7 @@ class SignupScreen extends React.Component {
 
     // firebase
     //   .auth()
-    //   .createUserWithEmailAndPassword(email, password)
+    //   .createUserWithEmailAndPassword(fields.email.value, fields.password.value)
     //   .then(response => {
     //     const { navigation } = this.props;
     //     const { fullname, phone, email } = this.state;
@@ -67,7 +67,7 @@ class SignupScreen extends React.Component {
     //       email: email,
     //       fullname: fullname,
     //       phone: phone,
-    //       appIdentifier: "rn-android-universal-listings"
+    //       // appIdentifier: "rn-android-universal-listings"
     //     };
     //     user_uid = response.user._user.uid;
     //     firebase
