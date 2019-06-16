@@ -93,15 +93,12 @@ export default class InputField extends React.Component {
     handleDatePicked = date => {
         const { type } = this.props;
         date += '';
-        console.log(date)
         if (type == FieldTypes.date) {
             date = date.substring(0, 16);
-
         } else {
             date = date.substring(16, 22) + "00";
         }
         this.hideDateTimePicker();
-        console.log(date)
         this.onChangeText(date);
     };
     renderChild = () => {
