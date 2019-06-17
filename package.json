@@ -20,7 +20,7 @@
     "react-native-modal-datetime-picker": "^7.4.2",
     "react-native-modal-picker-improved": "git+https://github.com/WebMobileDeveloper/react-native-modal-picker-improved.git",
     "react-native-simple-radio-button": "^2.7.3",
-    "react-native-text-input-mask": "^1.0.1",
+    "react-native-text-input-mask": "git+https://github.com/WebMobileDeveloper/react-native-text-input-mask.git",
     "react-native-vector-icons": "^6.5.0",
     "react-navigation": "^3.11.0",
     "react-navigation-redux-helpers": "^3.0.2",
