@@ -1,7 +1,8 @@
 
 import React from "react";
 import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
-import TextInputMask from 'react-native-text-input-mask';
+// import TextInputMask from 'react-native-text-input-mask';
+import MaskedInput from 'react-native-masked-input-text';
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 import { AppStyles } from "../AppStyles";
@@ -136,12 +137,14 @@ export default class InputField extends React.Component {
                     autoCorrect={autoCorrect}
                 >{this.state.value}</Text>)
             case FieldTypes.phone:
-                return (<TextInputMask
+                return (<MaskedInput
                     refInput={ref => { this.input = ref }}
-                    onChangeText={(formatted, extracted) => {
-                        // console.log("formated", formatted)
-                        // console.log("extracted", extracted)
-                        if (type == FieldTypes.phone) this.onChangeText("61" + extracted)
+                    onTextChange={(value) => {
+                        if (type == FieldTypes.phone) {
+                            let extracted = value.substr(1, value.length - 1);
+                            extracted = extracted.replace(/ /g, '');
+                            this.onChangeText("61" + extracted);
+                        }
                     }}
                     style={styles.body}
                     placeholder={placeholder}

@@ -172,7 +172,7 @@ class OrderScreen extends React.Component {
                 submitted={this.state.submitted}
                 onUpdate={this.updateState}
                 validations={[ValidateTypes.required, ValidateTypes.phone]}
-                maskString="+61 [000] [000] [000]"
+                maskString="+61 000 000 000"
                 borderRadius={0}
                 marginBottom={0}
                 width={'100%'} />

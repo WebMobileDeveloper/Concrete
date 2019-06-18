@@ -106,7 +106,7 @@ class SignupScreen extends React.Component {
             validations={[ValidateTypes.required]} />
 
           <InputField name="phone" type={FieldTypes.phone} placeholder="Phone number" submitted={this.state.submitted} onUpdate={this.updateState}
-            validations={[ValidateTypes.required, ValidateTypes.phone]} maskString="+61 [000] [000] [000]" />
+            validations={[ValidateTypes.required, ValidateTypes.phone]} maskString="+61 000 000 000" />
 
           <InputField name="email" type={FieldTypes.email} placeholder="E-mail Address" submitted={this.state.submitted} onUpdate={this.updateState}
             validations={[ValidateTypes.required, ValidateTypes.email]} />
