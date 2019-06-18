@@ -1,4 +1,16 @@
 // import moment from "moment";
+import { Animated, Easing } from "react-native";
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyBO3emUdScFuxy3P8aMrIT1IFCz-QzV6aQ",
+  authDomain: "concrete-92b62.firebaseapp.com",
+  databaseURL: "https://concrete-92b62.firebaseio.com",
+  projectId: "concrete-92b62",
+  storageBucket: "concrete-92b62.appspot.com",
+  messagingSenderId: "326097592364",
+  appId: "1:326097592364:web:3099a4bac86f6d84"
+};
+
 
 export const Configuration = {
   home: {
@@ -32,3 +44,10 @@ export const Configuration = {
   //   return time;
   // }
 };
+export const noTransitionConfig = () => ({
+  transitionSpec: {
+    duration: 0,
+    timing: Animated.timing,
+    easing: Easing.step0
+  }
+});

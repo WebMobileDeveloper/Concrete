@@ -1,18 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, View, } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Button from "react-native-button";
+import firebase from "react-native-firebase";
+import { connect } from 'react-redux';
+import AsyncStorage from "@react-native-community/async-storage";
+
 import { AppStyles } from "../AppStyles";
-// import firebase from "react-native-firebase";
 import { ValidateTypes, FieldTypes } from '../Globals';
 import InputField from "../components/InputField";
+import { show_loading, hide_loading } from '../actions';
+import { show_toast } from '../utils/func';
 
 class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      loading: true,
       fields: {
         fullname: { value: '', error: true, },
         phone: { value: '', error: true, },
@@ -23,82 +26,76 @@ class SignupScreen extends React.Component {
       submitted: false,
     };
     this.updateState = this.updateState.bind(this);
+    this.onSubmint = this.onSubmint.bind(this);
+    this.onRegister = this.onRegister.bind(this);
+    this.saveUser = this.saveUser.bind(this);
+    this.onSuccess = this.onSuccess.bind(this);
+    this.onError = this.onError.bind(this);
   }
 
-  componentDidMount() {
-    // this.authSubscription = firebase.auth().onAuthStateChanged(user => {
-    //   this.setState({
-    //     loading: false,
-    //     user
-    //   });
-    // });
-  }
-
-  componentWillUnmount() {
-    // this.authSubscription();
-  }
-
-  onRegister = () => {
-    const { fields } = this.state;
-    this.setState({ submitted: true });
-    for (key in fields) {
-      if (fields[key].error) {
-        return;
-      }
-    }
-    const { navigation } = this.props;
-    const user = {
-      email: "Test@mail.com",
-      fullname: "Test User",
-      phone: "1230-121-2123",
-      appIdentifier: "rn-android-universal-listings"
-    };
-    navigation.dispatch({ type: "Login", user: user });
-
-
-
-    // firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(fields.email.value, fields.password.value)
-    //   .then(response => {
-    //     const { navigation } = this.props;
-    //     const { fullname, phone, email } = this.state;
-    //     const data = {
-    //       email: email,
-    //       fullname: fullname,
-    //       phone: phone,
-    //       // appIdentifier: "rn-android-universal-listings"
-    //     };
-    //     user_uid = response.user._user.uid;
-    //     firebase
-    //       .firestore()
-    //       .collection("users")
-    //       .doc(user_uid)
-    //       .set(data);
-    //     firebase
-    //       .firestore()
-    //       .collection("users")
-    //       .doc(user_uid)
-    //       .get()
-    //       .then(function(user) {
-    //         navigation.dispatch({ type: "Login", user: user });
-    //       })
-    //       .catch(function(error) {
-    //         const { code, message } = error;
-    //         alert(message);
-    //       });
-    //   })
-    //   .catch(error => {
-    //     const { code, message } = error;
-    //     alert(message);
-    //   });
-
-  };
   updateState(name, value, error) {
     var fields = { ...this.state.fields };
     fields[name] = { value, error };
     this.setState({ fields })
   }
+  onSubmint() {
+    this.setState({ submitted: true }, () => this.onRegister());
+  }
+  onRegister() {
+    const self = this;
+    const { fields } = self.state;
+    for (key in fields) {
+      if (fields[key].error) {
+        return;
+      }
+    }
+    const { fullname, phone, email, password } = this.state.fields;
+
+    this.props.dispatch(show_loading());
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email.value, password.value)
+      .then(response => {
+        const user = {
+          uid: response.user._user.uid,
+          fullname: fullname.value,
+          email: email.value,
+          phone: phone.value,
+          password: password.value,
+          user_type: 'client'
+        };
+        self.saveUser(user);
+      })
+      .catch(error => {
+        self.onError(error)
+      });
+  };
+  saveUser(user) {
+    const self = this;
+    firebase.database().ref('users/' + user.uid).set(user, function (error) {
+      if (error) {
+        self.onError(error)
+      } else {
+        self.onSuccess(user)
+      }
+    });
+  }
+  onSuccess(user) {
+    const { navigation } = this.props;
+    AsyncStorage.setItem("@loggedInUser:uid", user.uid);
+    AsyncStorage.setItem("@loggedInUser:email", user.email);
+    AsyncStorage.setItem("@loggedInUser:password", user.password);
+
+    this.props.dispatch(hide_loading());
+    show_toast("Signup Success!");
+    navigation.dispatch({ type: "Login", user: user });
+  }
+  onError(error) {
+    this.props.dispatch(hide_loading())
+    const { code, message } = error;
+    alert(message);
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView >
@@ -122,7 +119,7 @@ class SignupScreen extends React.Component {
           <Button
             containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
             style={styles.facebookText}
-            onPress={() => this.onRegister()}>Sign Up</Button>
+            onPress={() => this.onSubmint()}>Sign Up</Button>
         </View>
       </KeyboardAwareScrollView>
     );
@@ -132,7 +129,7 @@ class SignupScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   title: {
     fontSize: AppStyles.fontSize.title,
@@ -173,4 +170,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignupScreen;
+export default connect()(SignupScreen);

@@ -14,7 +14,7 @@ export default HomeStack = createStackNavigator(
     headerLayoutPreset: "center",
     navigationOptions: ({navigation}) => {
       return ({
-        headerTintColor: "red",
+        // headerTintColor: "red",
         headerTitleStyle: styles.headerTitleStyle,
 
       })

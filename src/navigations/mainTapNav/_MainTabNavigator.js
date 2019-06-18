@@ -1,10 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from "react-navigation";
-import { Image, Text } from "react-native";
+import { Image} from "react-native";
 import { Configuration } from "../../Configuration";
 import HomeStack from './HomeStack';
 import OrderStack from './OrderStack';
 import { AppIcon, AppStyles } from "../../AppStyles";
+import {noTransitionConfig} from '../../Configuration';
 
 export default MainTabNavigator = createBottomTabNavigator(
     {
@@ -14,7 +15,7 @@ export default MainTabNavigator = createBottomTabNavigator(
     {
         initialRouteName: "Order",
         defaultNavigationOptions: ({ navigation }) => ({
-            tabBarIcon: ({ focused, tintColor } ) => {
+            tabBarIcon: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
                 switch (routeName) {
@@ -30,9 +31,9 @@ export default MainTabNavigator = createBottomTabNavigator(
                 );
             },
         }),
-        initialLayout: {
-            height: 300
-        },
+        // initialLayout: {
+        //     height: 300
+        // },
         tabBarOptions: {
             activeTintColor: AppStyles.color.tint,
             inactiveTintColor: "gray",
@@ -40,6 +41,6 @@ export default MainTabNavigator = createBottomTabNavigator(
                 height: Configuration.home.tab_bar_height
             }
         },
-
+        // transitionConfig: noTransitionConfig,
     }
 );

@@ -1,130 +1,70 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
+import { connect } from 'react-redux';
 import Button from "react-native-button";
-import { AppStyles } from "../AppStyles";
-// import firebase from "react-native-firebase";
+import firebase from "react-native-firebase";
 import AsyncStorage from "@react-native-community/async-storage";
-// const FBSDK = require("react-native-fbsdk");
-// const { LoginManager, AccessToken } = FBSDK;
+import { AppStyles } from "../AppStyles";
+import { show_loading, hide_loading } from '../actions';
+import { show_toast } from '../utils/func';
 
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      email: "",
-      password: ""
+      email: "aaa@a.com",
+      password: "jhcjhc123"
     };
+    this.onPressLogin = this.onPressLogin.bind(this);
+    this.getUser = this.getUser.bind(this);
+    this.onSuccess = this.onSuccess.bind(this);
+    this.onError = this.onError.bind(this);
   }
 
-  onPressLogin = () => {
-    const { email, password } = this.state;
+  onPressLogin() {
+    const self = this;
+    const { email, password } = self.state;
     if (email.length <= 0 || password.length <= 0) {
       alert("Please fill out the required fields.");
       return;
     }
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword(email, password)
-    //   .then(response => {
-    //     const { navigation } = this.props;
-    //     user_uid = response.user._user.uid;
-    //     firebase
-    //       .firestore()
-    //       .collection("users")
-    //       .doc(user_uid)
-    //       .get()
-    //       .then(function(user) {
-    //         if (user.exists) {
-    //           AsyncStorage.setItem("@loggedInUserID:id", user_uid);
-    //           AsyncStorage.setItem("@loggedInUserID:key", email);
-    //           AsyncStorage.setItem("@loggedInUserID:password", password);
-    //           navigation.dispatch({ type: "Login", user: user });
-    //         } else {
-    //           alert("User does not exist. Please try again.");
-    //         }
-    //       })
-    //       .catch(function(error) {
-    //         const { code, message } = error;
-    //         alert(message);
-    //       });
-    //   })
-    //   .catch(error => {
-    //     const { code, message } = error;
-    //     alert(message);
-    //     // For details of error codes, see the docs
-    //     // The message contains the default Firebase string
-    //     // representation of the error
-    //   });
+    this.props.dispatch(show_loading());
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(response => {
+        self.getUser(response.user._user.uid);
+      })
+      .catch(error => {
+        self.onError(error);
+      });
+  };
+  getUser(uid) {
+    const self = this;
+    firebase.database().ref('users/' + uid).once('value', ({ _value }) => {
+      if (_value) {
+        self.onSuccess(_value);
+      } else {
+        self.onError({ message: "User does not exist. Please try again." });
+      }
+    })
+  }
+  onSuccess(user) {
     const { navigation } = this.props;
-    const user_uid = "test";
-    const user = {
-      emial: email,
-      password: password,
-    }
-    AsyncStorage.setItem("@loggedInUserID:id", user_uid);
-    AsyncStorage.setItem("@loggedInUserID:key", email);
-    AsyncStorage.setItem("@loggedInUserID:password", password);
+    AsyncStorage.setItem("@loggedInUser:uid", user.uid);
+    AsyncStorage.setItem("@loggedInUser:email", user.email);
+    AsyncStorage.setItem("@loggedInUser:password", user.password);
+
+    this.props.dispatch(hide_loading());
+    show_toast("Login Success!");
     navigation.dispatch({ type: "Login", user: user });
-  };
-
-  onPressFacebook = () => {
-    // LoginManager.logInWithReadPermissions([
-    //   "public_profile",
-    //   "user_friends",
-    //   "email"
-    // ]).then(
-    //   result => {
-    //     if (result.isCancelled) {
-    //       alert("Whoops!", "You cancelled the sign in.");
-    //     } else {
-    //       AccessToken.getCurrentAccessToken().then(data => {
-    //         const credential = firebase.auth.FacebookAuthProvider.credential(
-    //           data.accessToken
-    //         );
-    //         const accessToken = data.accessToken;
-    //         firebase
-    //           .auth()
-    //           .signInWithCredential(credential)
-    //           .then(result => {
-    //             var user = result.user;
-    //             AsyncStorage.setItem(
-    //               "@loggedInUserID:facebookCredentialAccessToken",
-    //               accessToken
-    //             );
-    //             AsyncStorage.setItem("@loggedInUserID:id", user.uid);
-    //             var userDict = {
-    //               id: user.uid,
-    //               fullname: user.displayName,
-    //               email: user.email,
-    //               profileURL: user.photoURL
-    //             };
-    //             var data = {
-    //               ...userDict,
-    //               appIdentifier: "rn-android-universal-listings"
-    //             };
-    //             firebase
-    //               .firestore()
-    //               .collection("users")
-    //               .doc(user.uid)
-    //               .set(data);
-    //             this.props.navigation.dispatch({
-    //               type: "Login",
-    //               user: userDict
-    //             });
-    //           })
-    //           .catch(error => {
-    //             alert("Please try again! " + error);
-    //           });
-    //       });
-    //     }
-    //   },
-    //   error => {
-    //     Alert.alert("Sign in error", error);
-    //   }
-    // );
-  };
-
+  }
+  onError(error) {
+    this.props.dispatch(hide_loading());
+    const { message } = error;
+    alert(message);
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -153,18 +93,7 @@ class LoginScreen extends React.Component {
         <Button
           containerStyle={styles.loginContainer}
           style={styles.loginText}
-          onPress={() => this.onPressLogin()}
-        >
-          Log in
-        </Button>
-        <Text style={styles.or}>OR</Text>
-        <Button
-          containerStyle={styles.facebookContainer}
-          style={styles.facebookText}
-          onPress={() => this.onPressFacebook()}
-        >
-          Login with Facebook
-        </Button>
+          onPress={() => this.onPressLogin()}>Log in</Button>
       </View>
     );
   }
@@ -239,5 +168,4 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white
   }
 });
-
-export default LoginScreen;
+export default connect()(LoginScreen);

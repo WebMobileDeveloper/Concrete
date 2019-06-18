@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, ActivityIndicator, Image, ImageBackground } fro
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { AppStyles } from "../AppStyles";
-// import firebase from "react-native-firebase";
+import firebase from "react-native-firebase";
 
 class WelcomeScreen extends React.Component {
   static navigationOptions = {
@@ -16,9 +16,42 @@ class WelcomeScreen extends React.Component {
     this.state = {
       isLoading: true
     };
+  }
+  componentDidMount(){
     this.tryToLoginFirst();
   }
-
+  async tryToLoginFirst() {
+    const uid = await AsyncStorage.getItem("@loggedInUser:uid");
+    const email = await AsyncStorage.getItem("@loggedInUser:email");
+    const password = await AsyncStorage.getItem("@loggedInUser:password");
+    const self = this;
+    if (uid && password) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(user => {
+          firebase
+            .database()
+            .ref('users/' + uid).on('value', ({ _value }) => {
+              self.onSubmit(_value);
+            })
+        })
+        .catch(error => {
+          self.onSubmit(null);
+        });
+    } else {
+      self.onSubmit(null);
+    }
+  }
+  onSubmit(user) {
+    const self = this;
+    this.setState({ isLoading: false }, () => {
+      if (user) {
+        const { navigation } = self.props;
+        navigation.dispatch({ type: "Login", user: user });
+      }
+    })
+  }
   render() {
     if (this.state.isLoading) {
       return (
@@ -48,98 +81,6 @@ class WelcomeScreen extends React.Component {
         {/* </ImageBackground> */}
       </View>
     );
-  }
-
-  async tryToLoginFirst() {
-    const email = await AsyncStorage.getItem("@loggedInUserID:key");
-    const password = await AsyncStorage.getItem("@loggedInUserID:password");
-    const id = await AsyncStorage.getItem("@loggedInUserID:id");
-    if (
-      id != null &&
-      id.length > 0 &&
-      password != null &&
-      password.length > 0
-    ) {
-      // firebase
-      //   .auth()
-      //   .signInWithEmailAndPassword(email, password)
-      //   .then(user => {
-      //     const { navigation } = this.props;
-      //     firebase
-      //       .firestore()
-      //       .collection("users")
-      //       .doc(id)
-      //       .get()
-      //       .then(function(doc) {
-      //         var dict = {
-      //           id: id,
-      //           email: email,
-      //           profileURL: doc.photoURL,
-      //           fullname: doc.displayName
-      //         };
-      //         if (doc.exists) {
-      //           navigation.dispatch({
-      //             type: "Login",
-      //             user: dict
-      //           });
-      //         }
-      //       })
-      //       .catch(function(error) {
-      //         const { code, message } = error;
-      //         alert(message);
-      //       });
-      //     this.state.isLoading = false;
-      //   })
-      //   .catch(error => {
-      //     const { code, message } = error;
-      //     alert(message);
-      //     // For details of error codes, see the docs
-      //     // The message contains the default Firebase string
-      //     // representation of the error
-      //   });
-      const { navigation } = this.props;
-      var dict = {
-        id: id,
-        email: email,
-        profileURL: "",
-        fullname: "Test User"
-      };
-
-      navigation.dispatch({
-        type: "Login",
-        user: dict
-      });
-
-      this.setState({ isLoading: false });
-      return;
-    }
-    // const fbToken = await AsyncStorage.getItem(
-    //   "@loggedInUserID:facebookCredentialAccessToken"
-    // );
-    // if (id != null && id.length > 0 && fbToken != null && fbToken.length > 0) {
-    //   const credential = firebase.auth.FacebookAuthProvider.credential(fbToken);
-    //   firebase
-    //     .auth()
-    //     .signInWithCredential(credential)
-    //     .then(result => {
-    //       var user = result.user;
-    //       var userDict = {
-    //         id: user.uid,
-    //         fullname: user.displayName,
-    //         email: user.email,
-    //         profileURL: user.photoURL
-    //       };
-    //       this.props.navigation.dispatch({
-    //         type: "Login",
-    //         user: userDict
-    //       });
-    //     })
-    //     .catch(error => {
-    //       this.setState({ isLoading: false });
-    //     });
-    //   return;
-    // }
-    this.setState({ isLoading: false });
   }
 }
 

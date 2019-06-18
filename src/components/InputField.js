@@ -139,8 +139,8 @@ export default class InputField extends React.Component {
                 return (<TextInputMask
                     refInput={ref => { this.input = ref }}
                     onChangeText={(formatted, extracted) => {
-                        console.log("formated", formatted)
-                        console.log("extracted", extracted)
+                        // console.log("formated", formatted)
+                        // console.log("extracted", extracted)
                         if (type == FieldTypes.phone) this.onChangeText("61" + extracted)
                     }}
                     style={styles.body}
