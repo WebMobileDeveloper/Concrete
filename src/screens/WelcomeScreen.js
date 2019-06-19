@@ -17,14 +17,14 @@ class WelcomeScreen extends React.Component {
       isLoading: true
     };
   }
-  componentDidMount(){
+  componentDidMount() {
     this.tryToLoginFirst();
   }
   async tryToLoginFirst() {
     const uid = await AsyncStorage.getItem("@loggedInUser:uid");
     const email = await AsyncStorage.getItem("@loggedInUser:email");
     const password = await AsyncStorage.getItem("@loggedInUser:password");
-    const self = this;
+
     if (uid && password) {
       firebase
         .auth()
@@ -32,22 +32,22 @@ class WelcomeScreen extends React.Component {
         .then(user => {
           firebase
             .database()
-            .ref('users/' + uid).on('value', ({ _value }) => {
-              self.onSubmit(_value);
+            .ref('users/' + uid).once('value', ({ _value }) => {
+              this.onSubmit(_value);
             })
         })
         .catch(error => {
-          self.onSubmit(null);
+          this.onSubmit(null);
         });
     } else {
-      self.onSubmit(null);
+      this.onSubmit(null);
     }
   }
   onSubmit(user) {
-    const self = this;
+
     this.setState({ isLoading: false }, () => {
       if (user) {
-        const { navigation } = self.props;
+        const { navigation } = this.props;
         navigation.dispatch({ type: "Login", user: user });
       }
     })

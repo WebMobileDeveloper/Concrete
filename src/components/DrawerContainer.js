@@ -10,10 +10,27 @@ export default class DrawerContainer extends React.Component {
       <View style={styles.content}>
         <View style={styles.container}>
           <MenuButton
+            title="HOME"
+            source={AppIcon.images.home}
+            onPress={() => {
+              navigation.dispatch({ type: "HOME" });
+              navigation.closeDrawer();
+            }}
+          />
+          <MenuButton
+            title="PROFILE"
+            source={AppIcon.images.profile}
+            onPress={() => {
+              navigation.dispatch({ type: "PROFILE" });
+              navigation.closeDrawer();
+            }}
+          />
+          <MenuButton
             title="LOG OUT"
             source={AppIcon.images.logout}
             onPress={() => {
               navigation.dispatch({ type: "Logout" });
+              navigation.closeDrawer();
             }}
           />
         </View>

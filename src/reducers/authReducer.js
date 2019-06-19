@@ -12,6 +12,9 @@ export default auth = (state = initialAuthState, action) => {
             AsyncStorage.removeItem("@loggedInUser:email");
             AsyncStorage.removeItem("@loggedInUser:password");
             return { ...state, isLoggedIn: false, user: {} };
+        case "PROFILE_UPDATED":
+            let newState = { ...state, user: action.user };
+            return newState;
         default:
             return state;
     }

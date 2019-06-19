@@ -29,66 +29,63 @@ export default class InputField extends React.Component {
     }
 
     componentDidMount() {
-        this.onChangeText('');
+        const { defaultValue = '' } = this.props;
+        this.onChangeText(defaultValue);
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { defaultValue } = nextProps;
+        if (defaultValue != undefined && defaultValue !== prevState.value) {
+            return ({ value: defaultValue, errorText: '' });
+        }
+        else return null;
+    }
     parentUpdate(value, error) {
         const { name, onUpdate } = this.props;
         onUpdate(name, value, error);
     }
     onChangeText(value) {
-        const { type } = this.props;
-        const { validations, matchText } = this.props;
-        
-        this.setState({ value: value, errorText: '' });
+        const { type, validations = [], matchText } = this.props;
+        let checkValue = value;
+        let errorText = '';
         if (type != FieldTypes.phone) {
-            value = value.trim();
+            checkValue = checkValue.trim();
         } else {
-            value = value.substr(1, value.length - 1);
-            value = value.replace(/ /g, '');
+            checkValue = checkValue.substr(1, checkValue.length - 1);
+            checkValue = checkValue.replace(/ /g, '');
         }
 
         for (i = 0; i < validations.length; i++) {
             switch (validations[i]) {
                 case ValidateTypes.required:
-                    if (value === '') {
-                        this.setState({ errorText: 'This field is required!' });
-                        this.parentUpdate(value, true);
-                        return;
+                    if (checkValue === '') {
+                        errorText = 'This field is required!';
                     }
                     break;
                 case ValidateTypes.phone:
-                    if (phoneReg.test(value) === false) {
-                        this.setState({ errorText: 'Invalid phone number!' });
-                        this.parentUpdate(value, true);
-                        return;
+                    if (phoneReg.test(checkValue) === false) {
+                        errorText = 'Invalid phone number!';
                     }
                     break;
                 case ValidateTypes.email:
-                    if (emailReg.test(value) === false) {
-                        this.setState({ errorText: 'Invalid email address!' });
-                        this.parentUpdate(value, true);
-                        return;
+                    if (emailReg.test(checkValue) === false) {
+                        errorText = 'Invalid email address!';
                     }
                     break;
                 case ValidateTypes.match:
-                    if (value != matchText) {
-                        this.setState({ errorText: 'Password doesn\'t matched!' });
-                        this.parentUpdate(value, true);
-                        return;
+                    if (checkValue != matchText) {
+                        errorText = 'Password doesn\'t matched!';
                     }
                     break;
                 case ValidateTypes.number:
-                    if (numberReg.test(value) === false) {
-                        this.setState({ errorText: 'Invalid number!' });
-                        this.parentUpdate(value, true);
-                        return;
+                    if (numberReg.test(checkValue) === false) {
+                        errorText = 'Invalid number!';
                     }
                     break;
             }
         }
-
-        this.parentUpdate(value, false);
+        this.setState({ value, errorText });
+        this.parentUpdate(value, errorText ? true : false);
     }
     showDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: true });
@@ -110,7 +107,7 @@ export default class InputField extends React.Component {
         this.onChangeText(date);
     };
     renderChild = () => {
-        const { type, placeholder, maskString, } = this.props;
+        const { type, placeholder, maskString } = this.props;
         let keyboardType = 'default';
         let secureTextEntry = false;
         let autoCorrect = false;
@@ -162,7 +159,7 @@ export default class InputField extends React.Component {
                     mask={maskString} />)
             default:
                 return (<TextInput
-                    onChangeText={this.onChangeText}
+                    onChangeText={(value) => this.onChangeText(value)}
                     style={styles.body}
                     placeholder={placeholder}
                     value={this.state.value}

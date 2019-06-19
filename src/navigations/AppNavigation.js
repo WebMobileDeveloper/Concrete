@@ -13,6 +13,9 @@ import TermsAndConditions from "../screens/TermsAndConditions";
 import OrderScreen from "../screens/OrderScreen";
 import HomeScreen from "../screens/HomeScreen";
 
+import ProfileScreen from "../screens/ProfileScreen";
+import EditProfileScreen from "../screens/EditProfileScreen";
+
 import { AppIcon, AppStyles } from "../AppStyles";
 import { Configuration } from "../Configuration";
 import DrawerContainer from "../components/DrawerContainer";
@@ -26,6 +29,9 @@ const noTransitionConfig = () => ({
 });
 
 const middleware = createReactNavigationReduxMiddleware(state => state.nav);
+// ===========================================================================
+//                    AuthStack
+// ===========================================================================
 
 const AuthStack = createStackNavigator(
   {
@@ -38,24 +44,29 @@ const AuthStack = createStackNavigator(
     initialRouteName: "Welcome",
     headerMode: "float",
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: "red",
+      headerTintColor: AppStyles.color.blue,
       headerTitleStyle: styles.headerTitleStyle
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
   }
 );
 
+
+// ===========================================================================
+//                    HomeTabNavigator
+// ===========================================================================
+
 const HomeStack = createStackNavigator(
   {
-    Home: { screen: HomeScreen }
+    HomeScreen: { screen: HomeScreen }
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "HomeScreen",
     headerMode: "float",
 
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: "red",
+      headerTintColor: AppStyles.color.blue,
       headerTitleStyle: styles.headerTitleStyle
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
@@ -64,25 +75,25 @@ const HomeStack = createStackNavigator(
 
 const OrderStack = createStackNavigator(
   {
-    Order: { screen: OrderScreen }
+    OrderScreen: { screen: OrderScreen }
   },
   {
-    initialRouteName: "Order",
+    initialRouteName: "OrderScreen",
     headerMode: "float",
 
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: "red",
+      headerTintColor: AppStyles.color.blue,
       headerTitleStyle: styles.headerTitleStyle
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
   }
 );
 
-const TabNavigator = createBottomTabNavigator(
+const HomeTabNavigator = createBottomTabNavigator(
   {
-    Home: { screen: HomeStack },
-    Order: { screen: OrderStack }
+    HomeStack: { screen: HomeStack },
+    OrderStack: { screen: OrderStack }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -90,10 +101,10 @@ const TabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-          case 'Home':
+          case 'HomeStack':
             iconName = AppIcon.images.home;
             break;
-          case 'Order':
+          case 'OrderStack':
             iconName = AppIcon.images.order;
             break;
         }
@@ -122,14 +133,100 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
+
+
+// ===========================================================================
+//                    ProfileTabNavigator
+// ===========================================================================
+const ProfileStack = createStackNavigator(
+  {
+    ProfileScreen: { screen: ProfileScreen }
+  },
+  {
+    initialRouteName: "ProfileScreen",
+    headerMode: "float",
+
+    headerLayoutPreset: "center",
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: AppStyles.color.blue,
+      headerTitleStyle: styles.headerTitleStyle
+    }),
+    cardStyle: { backgroundColor: "#FFFFFF" }
+  }
+);
+const EditProfileStack = createStackNavigator(
+  {
+    EditProfileScreen: { screen: EditProfileScreen }
+  },
+  {
+    initialRouteName: "EditProfileScreen",
+    headerMode: "float",
+
+    headerLayoutPreset: "center",
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: AppStyles.color.blue,
+      headerTitleStyle: styles.headerTitleStyle
+    }),
+    cardStyle: { backgroundColor: "#FFFFFF" }
+  }
+);
+
+const ProfileTabNavigator = createBottomTabNavigator(
+  {
+    ProfileStack: { screen: ProfileStack },
+    EditProfileStack: { screen: EditProfileStack},
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        switch (routeName) {
+          case 'ProfileStack':
+            iconName = AppIcon.images.home;
+            break;
+          case 'EditProfileStack':
+            iconName = AppIcon.images.order;
+            break;
+        }
+
+        // You can return any component that you like here! We usually use an
+        // icon component from react-native-vector-icons
+        return (
+          <Image
+            style={{
+              tintColor: focused ? AppStyles.color.tint : AppStyles.color.grey, width: 20, height: 20, resizeMode: "contain"
+            }}
+            source={iconName} />
+        );
+      }
+    }),
+    initialLayout: {
+      height: 300
+    },
+    tabBarOptions: {
+      activeTintColor: AppStyles.color.tint,
+      inactiveTintColor: "gray",
+      style: {
+        height: Configuration.home.tab_bar_height
+      }
+    }
+  }
+);
+
+
+// ===========================================================================
+//                    DrawerStack
+// ===========================================================================
 // drawer stack
 const DrawerStack = createDrawerNavigator(
   {
-    Tab: TabNavigator
+    HomeTab: HomeTabNavigator,
+    ProfileTab: ProfileTabNavigator
   },
   {
     drawerPosition: "left",
-    initialRouteName: "Tab",
+    initialRouteName: "HomeTab",
     drawerWidth: 200,
     contentComponent: DrawerContainer
   }

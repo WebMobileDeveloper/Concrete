@@ -61,16 +61,18 @@ export const AppIcon = {
     marginRight: 10
   },
   style: {
-    tintColor: AppStyles.color.tint,
+    tintColor: AppStyles.color.blue,
     width: 25,
     height: 25
   },
   images: {
     home: require("../assets/icons/home.png"),
     order: require("../assets/icons/order.png"),
-    defaultUser: require("../assets/icons/default_user.jpg"),
-    logout: require("../assets/icons/shutdown.png"),
+    defaultUser: require("../assets/icons/menu.png"),
+    logout: require("../assets/icons/logout.png"),
     menu: require("../assets/icons/menu.png"),
+    edit: require("../assets/icons/edit.png"),
+    profile: require("../assets/icons/profile.png"),
   }
 };
 
