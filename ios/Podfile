@@ -8,8 +8,8 @@ target 'Concrete' do
   # Pods for Concrete
   pod 'Firebase/Core', '~> 5.20.2'
   pod 'Firebase/Auth', '~> 5.20.2'
-  pod 'Firebase/Firestore', '~> 5.20.2'
-  pod 'Firebase/Storage', '~> 5.20.2'
+  # pod 'Firebase/Firestore', '~> 5.20.2'
+  # pod 'Firebase/Storage', '~> 5.20.2'
   pod 'Firebase/Database', '~> 5.20.2'
   rn_path = '../node_modules/react-native'
   pod 'yoga', path: "#{rn_path}/ReactCommon/yoga/yoga.podspec"

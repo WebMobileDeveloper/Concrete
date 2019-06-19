@@ -37,9 +37,16 @@ export default class InputField extends React.Component {
         onUpdate(name, value, error);
     }
     onChangeText(value) {
+        const { type } = this.props;
         const { validations, matchText } = this.props;
+        
         this.setState({ value: value, errorText: '' });
-        value = value.trim();
+        if (type != FieldTypes.phone) {
+            value = value.trim();
+        } else {
+            value = value.substr(1, value.length - 1);
+            value = value.replace(/ /g, '');
+        }
 
         for (i = 0; i < validations.length; i++) {
             switch (validations[i]) {
@@ -141,9 +148,7 @@ export default class InputField extends React.Component {
                     refInput={ref => { this.input = ref }}
                     onTextChange={(value) => {
                         if (type == FieldTypes.phone) {
-                            let extracted = value.substr(1, value.length - 1);
-                            extracted = extracted.replace(/ /g, '');
-                            this.onChangeText("61" + extracted);
+                            this.onChangeText(value);
                         }
                     }}
                     style={styles.body}

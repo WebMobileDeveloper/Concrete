@@ -1,7 +1,7 @@
 
 import firebase from "react-native-firebase";
 import { NavigationActions } from "react-navigation";
-import RootNavigator from "../navigations/RootNavigator";
+import { RootNavigator } from "../navigations/AppNavigation";
 
 
 const firstAction = RootNavigator.router.getActionForPathAndParams(
@@ -14,17 +14,14 @@ export default nav = (state = initialNavState, action) => {
     let nextState;
     switch (action.type) {
         case "Login":
-            console.log("state=== ", state);
             nextState = RootNavigator.router.getStateForAction(
-                NavigationActions.navigate({ routeName: "MainTap" }),
+                NavigationActions.navigate({ routeName: "DrawerStack" }),
                 state
             );
-            console.log("nextState==== ", nextState);
             break;
         case "Logout":
             try {
                 firebase.auth().signOut();
-                console.log("Logout state=== ", state);
                 nextState = RootNavigator.router.getStateForAction(
                     NavigationActions.navigate({
                         routeName: "AuthStack",
@@ -32,7 +29,6 @@ export default nav = (state = initialNavState, action) => {
                     }),
                     state
                 );
-                console.log("Logout nextState==== ", nextState);
             } catch (e) {
                 console.log(e);
             }
