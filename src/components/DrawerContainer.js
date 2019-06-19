@@ -4,6 +4,12 @@ import MenuButton from "./MenuButton";
 import { AppIcon } from "../AppStyles";
 
 export default class DrawerContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: 'HOME',
+    }
+  }
   render() {
     const { navigation } = this.props;
     return (
@@ -12,7 +18,9 @@ export default class DrawerContainer extends React.Component {
           <MenuButton
             title="HOME"
             source={AppIcon.images.home}
+            selected={this.state.selected == 'HOME'}
             onPress={() => {
+              this.setState({ selected: 'HOME' });
               navigation.dispatch({ type: "HOME" });
               navigation.closeDrawer();
             }}
@@ -20,7 +28,9 @@ export default class DrawerContainer extends React.Component {
           <MenuButton
             title="PROFILE"
             source={AppIcon.images.profile}
+            selected={this.state.selected == 'PROFILE'}
             onPress={() => {
+              this.setState({ selected: 'PROFILE' });
               navigation.dispatch({ type: "PROFILE" });
               navigation.closeDrawer();
             }}

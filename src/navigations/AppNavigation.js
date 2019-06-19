@@ -175,7 +175,8 @@ const ProfileStack = createStackNavigator(
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
       headerTintColor: AppStyles.color.blue,
-      headerTitleStyle: styles.headerTitleStyle
+      headerTitleStyle: styles.headerTitleStyle,
+      tabBarLabel: 'Profile',
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
   }
@@ -191,7 +192,8 @@ const EditProfileStack = createStackNavigator(
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
       headerTintColor: AppStyles.color.blue,
-      headerTitleStyle: styles.headerTitleStyle
+      headerTitleStyle: styles.headerTitleStyle,
+      tabBarLabel: 'Edit Profile',
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
   }

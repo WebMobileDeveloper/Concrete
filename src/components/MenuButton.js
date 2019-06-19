@@ -8,6 +8,7 @@ export default class MenuButton extends React.Component {
   }
 
   render() {
+    const { selected } = this.props;
     return (
       <TouchableHighlight
         onPress={this.props.onPress}
@@ -15,8 +16,11 @@ export default class MenuButton extends React.Component {
         underlayColor="rgba(128, 128, 128, 0.1)"
       >
         <View style={styles.btnContainer}>
-          <Image source={this.props.source} style={styles.btnIcon} />
-          <Text style={styles.btnText}>{this.props.title}</Text>
+          <Image source={this.props.source} style={[styles.btnIcon, { tintColor: selected ? AppStyles.color.tint : AppStyles.color.grey }]} />
+          <Text style={[styles.btnText, {
+            fontWeight: selected ? 'bold' : 'normal',
+            color: selected ? AppStyles.color.tint : AppStyles.color.grey
+          }]}>{this.props.title}</Text>
         </View>
       </TouchableHighlight>
     );
