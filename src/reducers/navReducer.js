@@ -17,9 +17,9 @@ export default nav = (state = initialNavState, action) => {
                 NavigationActions.navigate({
                     routeName: "DrawerStack",
                     action: NavigationActions.navigate({
-                        routeName: 'HomeTab',
+                        routeName: 'OrdersTab',
                         action: NavigationActions.navigate({
-                            routeName: "OrderStack",
+                            routeName: "RequestStack",
                             // action: NavigationActions.navigate({ routeName: 'ProfileTab' }),
                         }),
                     }),
@@ -32,7 +32,7 @@ export default nav = (state = initialNavState, action) => {
             nextState = RootNavigator.router.getStateForAction(
                 NavigationActions.navigate({
                     routeName: "DrawerStack",
-                    action: NavigationActions.navigate({ routeName: 'HomeTab' }),
+                    action: NavigationActions.navigate({ routeName: 'OrdersTab' }),
                 }),
                 state
             );

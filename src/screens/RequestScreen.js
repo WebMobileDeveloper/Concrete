@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Picker, StyleSheet, Text, View, TextInput, Alert } from "react-native";
+import { StyleSheet, Text, View, TextInput, Alert } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Divider } from 'react-native-elements';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
@@ -11,7 +11,7 @@ import Button from "react-native-button";
 
 import { AppStyles, AppIcon } from "../AppStyles";
 import { Configuration } from "../Configuration";
-import { initQuoteState, ValidateTypes, FieldTypes, JobTypes, Mpa_Strengths, Stone_Sizes, Slump_Wetness, } from '../Globals';
+import { ValidateTypes, FieldTypes, JobTypes, Mpa_Strengths, Stone_Sizes, Slump_Wetness, } from '../Globals';
 import InputField from "../components/InputField";
 import { show_loading, hide_loading } from '../actions';
 import HeaderLeft from "../components/HeaderLeft";
@@ -19,9 +19,9 @@ import HeaderButton from "../components/HeaderButton";
 
 
 
-class OrderScreen extends React.Component {
+class RequestScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Order / Quote",
+    title: "Order / Quote Request",
     headerLeft: <HeaderLeft navigation={navigation} />,
     // headerRight: <HeaderButton icon={AppIcon.images.edit} onPress={() => navigation.goBack()} />
   });
@@ -34,6 +34,7 @@ class OrderScreen extends React.Component {
       user: {},
       fields: {
         uid: { value: '', error: true },
+        title: { value: '', error: false, },
         orderType: { value: 'Order', error: false, },
         delivery_date: { value: '', error: true, },
         delivery_time: { value: '', error: true, },
@@ -108,6 +109,8 @@ class OrderScreen extends React.Component {
     for (key in fields) {
       data[key] = fields[key].value;
     }
+    data.status = 'request';
+
     Alert.alert(
       'Confirm',
       'Are you sure want to send request?',
@@ -148,13 +151,41 @@ class OrderScreen extends React.Component {
     const { code, message } = error;
     Alert.alert('Submit Error', message);
   }
+  pumpChanged(value) {
+    var fields = { ...this.state.fields };
+    if (value) {
+      fields.pumpRequired.value = false;
+      fields.quantity = { value: '', error: false };
+      fields.job_type = { value: JobTypes[0].label, error: false };
+    } else {
+      fields.pumpRequired.value = true;
+      fields.quantity = { value: '', error: true };
+      fields.job_type = { value: JobTypes[0].label, error: true };
+    }
+    this.setState({ fields })
+  }
+  
   render() {
     return (
       <View style={styles.container}>
         {!this.state.clear &&
           <KeyboardAwareScrollView style={styles.scrollContainer} contentContainerStyle={{ alignItems: 'center', }}>
             <View style={{ width: '100%' }}>
+              <RenderItem title="Order / Quote Request Title *">
+                <InputField name="title"
+                  type={FieldTypes.text}
+                  placeholder="Jhon's Order Request"
+                  submitted={this.state.submitted}
+                  onUpdate={this.updateState}
+                  validations={[ValidateTypes.required]}
+                  borderRadius={0}
+                  marginBottom={0}
+                  width={'100%'}
+                  defaultValue={this.state.fields.title.value} />
+              </RenderItem>
+              <Divider style={styles.divider} />
 
+              {/* ===================== - Delivery Details =================================== */}
               <Text style={styles.sectionTitle}>{'- Delivery Details'}</Text>
               <RenderItem title="Is this a concrete Order or a Quote?" >
                 <RadioForm
@@ -351,19 +382,7 @@ class OrderScreen extends React.Component {
       </View>
     );
   }
-  pumpChanged(value) {
-    var fields = { ...this.state.fields };
-    if (value) {
-      fields.pumpRequired.value = false;
-      fields.quantity = { value: '', error: false };
-      fields.job_type = { value: JobTypes[0].label, error: false };
-    } else {
-      fields.pumpRequired.value = true;
-      fields.quantity = { value: '', error: true };
-      fields.job_type = { value: JobTypes[0].label, error: true };
-    }
-    this.setState({ fields })
-  }
+  
 }
 const MyModalPicker = ({ data, name, onChange }) => (
   <ModalPicker
@@ -450,4 +469,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(mapStateToProps)(OrderScreen);
+export default connect(mapStateToProps)(RequestScreen);

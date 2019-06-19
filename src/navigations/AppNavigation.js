@@ -10,11 +10,13 @@ import SignupScreen from "../screens/SignupScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import TermsAndConditions from "../screens/TermsAndConditions";
 
-import OrderScreen from "../screens/OrderScreen";
-import HomeScreen from "../screens/HomeScreen";
+import RequestScreen from "../screens/RequestScreen";
+import OrdersScreen from "../screens/OrdersScreen";
+import QuotesScreen from "../screens/QuotesScreen";
 
 import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
+import CardScreen from "../screens/CardScreen";
 
 import { AppIcon, AppStyles } from "../AppStyles";
 import { Configuration } from "../Configuration";
@@ -53,47 +55,67 @@ const AuthStack = createStackNavigator(
 
 
 // ===========================================================================
-//                    HomeTabNavigator
+//                    OrdersTabNavigator
 // ===========================================================================
 
-const HomeStack = createStackNavigator(
+const OrdersStack = createStackNavigator(
   {
-    HomeScreen: { screen: HomeScreen }
+    OrdersScreen: { screen: OrdersScreen }
   },
   {
-    initialRouteName: "HomeScreen",
+    initialRouteName: "OrdersScreen",
     headerMode: "float",
 
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
       headerTintColor: AppStyles.color.blue,
-      headerTitleStyle: styles.headerTitleStyle
+      headerTitleStyle: styles.headerTitleStyle,
+      tabBarLabel: 'Orders',
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
   }
 );
-
-const OrderStack = createStackNavigator(
+const QuotesStack = createStackNavigator(
   {
-    OrderScreen: { screen: OrderScreen }
+    QuotesScreen: { screen: QuotesScreen }
   },
   {
-    initialRouteName: "OrderScreen",
+    initialRouteName: "QuotesScreen",
     headerMode: "float",
 
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
       headerTintColor: AppStyles.color.blue,
-      headerTitleStyle: styles.headerTitleStyle
+      headerTitleStyle: styles.headerTitleStyle,
+      tabBarLabel: 'Quotes',
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
   }
 );
 
-const HomeTabNavigator = createBottomTabNavigator(
+const RequestStack = createStackNavigator(
   {
-    HomeStack: { screen: HomeStack },
-    OrderStack: { screen: OrderStack }
+    RequestScreen: { screen: RequestScreen }
+  },
+  {
+    initialRouteName: "RequestScreen",
+    headerMode: "float",
+
+    headerLayoutPreset: "center",
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: AppStyles.color.blue,
+      headerTitleStyle: styles.headerTitleStyle,
+      tabBarLabel: 'Request',
+    }),
+    cardStyle: { backgroundColor: "#FFFFFF" }
+  }
+);
+
+const OrdersTabNavigator = createBottomTabNavigator(
+  {
+    OrdersStack: { screen: OrdersStack },
+    QuotesStack: { screen: QuotesStack },
+    RequestStack: { screen: RequestStack }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -101,12 +123,16 @@ const HomeTabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-          case 'HomeStack':
-            iconName = AppIcon.images.home;
-            break;
-          case 'OrderStack':
+          case 'OrdersStack':
             iconName = AppIcon.images.order;
             break;
+          case 'QuotesStack':
+            iconName = AppIcon.images.quote;
+            break;
+          case 'RequestStack':
+            iconName = AppIcon.images.request;
+            break;
+
         }
 
         // You can return any component that you like here! We usually use an
@@ -170,11 +196,28 @@ const EditProfileStack = createStackNavigator(
     cardStyle: { backgroundColor: "#FFFFFF" }
   }
 );
+const CardStack = createStackNavigator(
+  {
+    CardScreen: { screen: CardScreen }
+  },
+  {
+    initialRouteName: "CardScreen",
+    headerMode: "float",
+
+    headerLayoutPreset: "center",
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: AppStyles.color.blue,
+      headerTitleStyle: styles.headerTitleStyle
+    }),
+    cardStyle: { backgroundColor: "#FFFFFF" }
+  }
+);
 
 const ProfileTabNavigator = createBottomTabNavigator(
   {
     ProfileStack: { screen: ProfileStack },
-    EditProfileStack: { screen: EditProfileStack},
+    EditProfileStack: { screen: EditProfileStack },
+    // CardStack: { screen: CardStack},
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -186,6 +229,9 @@ const ProfileTabNavigator = createBottomTabNavigator(
             iconName = AppIcon.images.home;
             break;
           case 'EditProfileStack':
+            iconName = AppIcon.images.order;
+            break;
+          case 'CardStack':
             iconName = AppIcon.images.order;
             break;
         }
@@ -221,12 +267,12 @@ const ProfileTabNavigator = createBottomTabNavigator(
 // drawer stack
 const DrawerStack = createDrawerNavigator(
   {
-    HomeTab: HomeTabNavigator,
+    OrdersTab: OrdersTabNavigator,
     ProfileTab: ProfileTabNavigator
   },
   {
     drawerPosition: "left",
-    initialRouteName: "HomeTab",
+    initialRouteName: "OrdersTab",
     drawerWidth: 200,
     contentComponent: DrawerContainer
   }

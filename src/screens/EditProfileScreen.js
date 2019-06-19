@@ -1,17 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Picker, StyleSheet, Text, View, TextInput, Alert } from "react-native";
+import { StyleSheet, Text, View, TextInput, Alert } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Divider } from 'react-native-elements';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
-import ModalPicker from 'react-native-modal-picker-improved';
 import firebase from "react-native-firebase";
 
 import Button from "react-native-button";
 
 import { AppStyles, AppIcon } from "../AppStyles";
 import { Configuration } from "../Configuration";
-import { ValidateTypes, FieldTypes, JobTypes, Mpa_Strengths, Stone_Sizes, Slump_Wetness, } from '../Globals';
+import { ValidateTypes, FieldTypes, } from '../Globals';
 import InputField from "../components/InputField";
 import { show_loading, hide_loading } from '../actions';
 import { show_toast } from '../utils/func';
@@ -238,32 +236,7 @@ class EditProfileScreen extends React.Component {
       </View>
     );
   }
-  pumpChanged(value) {
-    var fields = { ...this.state.fields };
-    if (value) {
-      fields.pumpRequired.value = false;
-      fields.quantity = { value: '', error: false };
-      fields.job_type = { value: JobTypes[0].label, error: false };
-    } else {
-      fields.pumpRequired.value = true;
-      fields.quantity = { value: '', error: true };
-      fields.job_type = { value: JobTypes[0].label, error: true };
-    }
-    this.setState({ fields })
-  }
 }
-const MyModalPicker = ({ data, name, onChange }) => (
-  <ModalPicker
-    data={data}
-    initValue={data[0].label}
-    style={{ marginBottom: 20 }}
-    selectTextStyle={{ textAlign: 'left', paddingLeft: 10 }}
-    optionStyle={{ backgroundColor: AppStyles.color.white }}
-    cancelStyle={{ backgroundColor: AppStyles.color.facebook }}
-    cancelTextStyle={{ color: AppStyles.color.white }}
-    onChange={(option) => { onChange(name, option.label, false) }} />
-)
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

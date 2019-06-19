@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "react-native-button";
-import { Text, View, StyleSheet, ActivityIndicator, Image, ImageBackground } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-
-import { AppStyles } from "../AppStyles";
 import firebase from "react-native-firebase";
+
+import { AppStyles, AppIcon } from "../AppStyles";
 
 class WelcomeScreen extends React.Component {
   static navigationOptions = {
@@ -65,9 +65,7 @@ class WelcomeScreen extends React.Component {
     }
     return (
       <View style={styles.container} >
-        {/* <ImageBackground style={styles.container} source={require('../../assets/images/login_back3.jpg')}> */}
-        {/* <View style={styles.overlay} /> */}
-        <Image style={styles.logo} source={require('../../assets/images/logo.png')} />
+        <Image style={styles.logo} source={AppIcon.images.logo} />
         <Text style={styles.subtitle}>WELCOME TO</Text>
         <Text style={styles.title}>CONCRETE DIRECT</Text>
         <Button
@@ -78,7 +76,6 @@ class WelcomeScreen extends React.Component {
           containerStyle={styles.signupContainer}
           style={styles.signupText}
           onPress={() => this.props.navigation.navigate("Terms")}>Sign Up</Button>
-        {/* </ImageBackground> */}
       </View>
     );
   }

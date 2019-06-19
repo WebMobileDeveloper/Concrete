@@ -1,17 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Divider } from 'react-native-elements';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import Button from "react-native-button";
-import firebase from "react-native-firebase";
 import { connect } from 'react-redux';
-import AsyncStorage from "@react-native-community/async-storage";
 
 import { AppStyles, AppIcon } from "../AppStyles";
-import { ValidateTypes, FieldTypes } from '../Globals';
-import InputField from "../components/InputField";
-import { show_loading, hide_loading } from '../actions';
-import { show_toast } from '../utils/func';
 import { Configuration } from "../Configuration";
 import HeaderLeft from "../components/HeaderLeft";
 import HeaderButton from "../components/HeaderButton";

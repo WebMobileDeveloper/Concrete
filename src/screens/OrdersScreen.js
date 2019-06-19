@@ -1,15 +1,16 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, } from "react-native";
-
 import { connect } from "react-redux";
+
 import { AppStyles, } from "../AppStyles";
 import { Configuration } from "../Configuration";
 import HeaderLeft from "../components/HeaderLeft";
 
-class HomeScreen extends React.Component {
+class OrdersScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Home",
-    headerLeft: <HeaderLeft navigation={navigation} />
+    title: "Orders",
+    headerLeft: <HeaderLeft navigation={navigation} />,
+
   });
 
   constructor(props) {
@@ -52,4 +53,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(mapStateToProps)(HomeScreen);
+export default connect(mapStateToProps)(OrdersScreen);

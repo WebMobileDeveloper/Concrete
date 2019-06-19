@@ -49,7 +49,6 @@
 		A4876EDC22B75F5900689701 /* libPods-Concrete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4876EDB22B75F5900689701 /* libPods-Concrete.a */; };
 		A4A6A25D22B1FB3D0091892C /* Noto Sans Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F0891347E93401DAF8409F4 /* Noto Sans Bold.ttf */; };
 		A4A6A28322B1FB430091892C /* Noto Sans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A79B2C5D63E474DAFA3383F /* Noto Sans.ttf */; };
-		A4A6A28422B1FB5B0091892C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
 		A4C9FEE122B8DB7F0099C60E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A4C9FEBA22B8DB7F0099C60E /* GoogleService-Info.plist */; };
 		AD516BA8E1C44B839256CF9C /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10E8F296F2BC40F29F52C7A9 /* Entypo.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -820,7 +819,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 940;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -1200,7 +1199,6 @@
 				A4A6A28322B1FB430091892C /* Noto Sans.ttf in Resources */,
 				A4A6A25D22B1FB3D0091892C /* Noto Sans Bold.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				A4A6A28422B1FB5B0091892C /* Info.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				37815E4BC2D040FAB5705F18 /* AntDesign.ttf in Resources */,
 				AD516BA8E1C44B839256CF9C /* Entypo.ttf in Resources */,

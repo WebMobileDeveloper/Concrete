@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   btnText: {
     fontFamily: AppStyles.fontName.bold,
     fontSize: 16,
-    marginLeft: 10,
+    marginLeft: 20,
     marginTop: 2
   }
 });
