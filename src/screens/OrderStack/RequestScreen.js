@@ -109,8 +109,14 @@ class RequestScreen extends React.Component {
     for (key in fields) {
       data[key] = fields[key].value;
     }
-    data.status = 'request';
+    //==============================================
+    //  add additionail data
+    data.status = 'Required';
     data.requestTime = firebase.database.ServerValue.TIMESTAMP;
+    data.lastUpdateTime = firebase.database.ServerValue.TIMESTAMP;
+    data.customerBadge = 0;
+    data.clientBadge = 1;
+    //==============================================
     Alert.alert(
       'Confirm',
       'Are you sure want to send request?',

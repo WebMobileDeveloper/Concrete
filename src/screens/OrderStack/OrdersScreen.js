@@ -1,11 +1,8 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView } from "react-native";
 import { connect } from "react-redux";
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
-import { Thumbnail, List, ListItem, Separator } from 'native-base';
+import {AccordionList } from 'accordion-collapse-react-native';
 
-import { AppStyles, } from "../../AppStyles";
-import { Configuration } from "../../Configuration";
 import HeaderLeft from "../../components/HeaderLeft";
 import { ItemHeader, ItemBody } from "../../components/OrderItem";
 
@@ -33,14 +30,9 @@ class OrdersScreen extends React.Component {
 
   componentDidMount() {
   }
-  _head = (item) => {
-    return (<ItemHeader item={item} />)
-  };
+  _head = (item) => (<ItemHeader item={item} type="Order"/>);
 
-  _body = (item) => {
-    console.log("body_item ====", item);
-    return (<ItemBody item={item} />);
-  }
+  _body = (item) => (<ItemBody item={item}  type="Order"/>);
 
   render() {
     return (

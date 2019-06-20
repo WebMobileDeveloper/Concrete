@@ -73,7 +73,6 @@ class WelcomeScreen extends React.Component {
     })
   }
   render() {
-    console.log("ordersList====",this.props.ordersList);
     if (this.state.isLoading) {
       return (
         <View style={styles.container} >

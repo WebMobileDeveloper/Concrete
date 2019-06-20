@@ -1,11 +1,20 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, } from "react-native";
-
+import { ScrollView } from "react-native";
 import { connect } from "react-redux";
-import { AppStyles, } from "../../AppStyles";
-import { Configuration } from "../../Configuration";
-import HeaderLeft from "../../components/HeaderLeft";
+import { AccordionList } from 'accordion-collapse-react-native';
 
+import HeaderLeft from "../../components/HeaderLeft";
+import { ItemHeader, ItemBody } from "../../components/OrderItem";
+
+const mapStateToProps = state => ({
+  // user: state.auth.user,
+  quotesList: state.app.quotesList,
+});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // watchquotesList: (uid) => dispatch(watchquotesList(uid)),
+  };
+}
 class QuotesScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Quotes",
@@ -20,36 +29,23 @@ class QuotesScreen extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.navigation.setParams({
-    //   menuIcon: this.props.user.profileURL
-    // });
   }
+  _head = (item) => (<ItemHeader item={item} type="Quote" />);
+
+  _body = (item) => (<ItemBody item={item} type="Quote" />);
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.title}>Welcome {this.props.user.email}</Text>
+      <ScrollView>
+        <AccordionList
+          list={this.props.quotesList}
+          header={this._head}
+          body={this._body}
+        />
       </ScrollView>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    flex: 1,
-    padding: Configuration.home.listing_item.offset
-  },
-  title: {
-    fontFamily: AppStyles.fontName.bold,
-    fontWeight: "bold",
-    color: AppStyles.color.title,
-    fontSize: 25
-  },
-});
 
-const mapStateToProps = state => ({
-  user: state.auth.user
-});
-
-export default connect(mapStateToProps)(QuotesScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(QuotesScreen);

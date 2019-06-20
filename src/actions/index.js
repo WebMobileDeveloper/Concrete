@@ -4,6 +4,7 @@ import { sortByField } from "../utils/func";
 
 
 let OrderListRef = null;
+let QuoteListRef = null;
 export function show_loading() {
     return {
         type: types.SHOW_LOADING,
@@ -20,9 +21,18 @@ export const setOrdersList = (ordersList) => {
         value: ordersList
     };
 };
+export const setQuotesList = (quotesList) => {
+    return {
+        type: types.SET_QUOTES_LIST,
+        value: quotesList
+    };
+};
 export const watchOrdersList = (uid) => {
     return function (dispatch) {
-        if (OrderListRef) OrderListRef.off('value');
+        if (OrderListRef) {
+            OrderListRef.off('value');
+            QuoteListRef.off('value');
+        }
         OrderListRef = firebase.database().ref("Order").orderByChild('uid').equalTo(uid);
         OrderListRef.on("value",
             function ({ _value }) {
@@ -38,6 +48,23 @@ export const watchOrdersList = (uid) => {
                 dispatch(actionSetOrdersList);
             },
             function (error) { console.log("watchOrdersList error======", error); }
+        );
+
+        QuoteListRef = firebase.database().ref("Quote").orderByChild('uid').equalTo(uid);
+        QuoteListRef.on("value",
+            function ({ _value }) {
+                let quotes = _value || {}
+                let quotesList = [];
+                for (key in quotes) {
+                    item = quotes[key];
+                    item.key = key;
+                    quotesList.push(item);
+                }
+                quotesList = sortByField(quotesList, "requestTime");
+                var actionSetQuotesList = setQuotesList(quotesList);
+                dispatch(actionSetQuotesList);
+            },
+            function (error) { console.log("watchQuotesList error======", error); }
         );
     }
 };

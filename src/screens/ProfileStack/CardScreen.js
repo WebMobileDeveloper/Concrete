@@ -34,7 +34,6 @@ class CardScreen extends React.Component {
 
   }
   onCardChange(form) {
-    console.log(form);
   }
 
 

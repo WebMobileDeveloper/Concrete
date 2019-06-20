@@ -1,3 +1,4 @@
 export const SHOW_LOADING="SHOW_LOADING";
 export const HIDE_LOADING="HIDE_LOADING";
 export const SET_ORDERS_LIST="SET_ORDERS_LIST";
+export const SET_QUOTES_LIST="SET_QUOTES_LIST";
