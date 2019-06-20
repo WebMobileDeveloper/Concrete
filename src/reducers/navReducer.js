@@ -13,21 +13,21 @@ export default nav = (state = initialNavState, action) => {
     let nextState;
     switch (action.type) {
         case "Login":
-            nextState = RootNavigator.router.getStateForAction(
-                NavigationActions.navigate({
-                    routeName: "DrawerStack",
-                    action: NavigationActions.navigate({
-                        routeName: 'OrdersTab',
-                        action: NavigationActions.navigate({
-                            routeName: "RequestStack",
-                            // action: NavigationActions.navigate({ routeName: 'ProfileTab' }),
-                        }),
-                    }),
-                    // action: NavigationActions.navigate({ routeName: 'ProfileTab' }),
-                }),
-                state
-            );
-            break;
+            // nextState = RootNavigator.router.getStateForAction(
+            //     NavigationActions.navigate({
+            //         routeName: "DrawerStack",
+            //         action: NavigationActions.navigate({
+            //             routeName: 'OrdersTab',
+            //             action: NavigationActions.navigate({
+            //                 routeName: "RequestStack",
+            //                 // action: NavigationActions.navigate({ routeName: 'ProfileTab' }),
+            //             }),
+            //         }),
+            //         // action: NavigationActions.navigate({ routeName: 'ProfileTab' }),
+            //     }),
+            //     state
+            // );
+            // break;
         case "HOME":
             nextState = RootNavigator.router.getStateForAction(
                 NavigationActions.navigate({

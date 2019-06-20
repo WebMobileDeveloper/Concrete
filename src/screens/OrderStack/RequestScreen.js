@@ -34,7 +34,7 @@ class RequestScreen extends React.Component {
       user: {},
       fields: {
         uid: { value: '', error: true },
-        title: { value: '', error: false, },
+        title: { value: '', error: true, },
         orderType: { value: 'Order', error: false, },
         delivery_date: { value: '', error: true, },
         delivery_time: { value: '', error: true, },
@@ -110,7 +110,7 @@ class RequestScreen extends React.Component {
       data[key] = fields[key].value;
     }
     data.status = 'request';
-
+    data.requestTime = firebase.database.ServerValue.TIMESTAMP;
     Alert.alert(
       'Confirm',
       'Are you sure want to send request?',
@@ -164,7 +164,7 @@ class RequestScreen extends React.Component {
     }
     this.setState({ fields })
   }
-  
+
   render() {
     return (
       <View style={styles.container}>
@@ -382,7 +382,7 @@ class RequestScreen extends React.Component {
       </View>
     );
   }
-  
+
 }
 const MyModalPicker = ({ data, name, onChange }) => (
   <ModalPicker

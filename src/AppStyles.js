@@ -8,7 +8,7 @@ const numColumns = 2;
 export const AppStyles = {
   color: {
     error: '#FF0000',
-
+    LIGHTCYAN:"#E0FFFF",
 
 
 

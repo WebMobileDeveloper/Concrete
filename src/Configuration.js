@@ -1,4 +1,4 @@
-// import moment from "moment";
+
 import { Animated, Easing } from "react-native";
 
 export const firebaseConfig = {
@@ -35,14 +35,7 @@ export const Configuration = {
   //     longitude: 0.0221
   //   }
   // },
-  // timeFormat: postTime => {
-  //   time = "";
-  //   if (postTime) {
-  //     time = moment(postTime).fromNow();
-  //   }
-  //   // time = postTime.toUTCString();
-  //   return time;
-  // }
+ 
 };
 export const noTransitionConfig = () => ({
   transitionSpec: {

@@ -3,9 +3,22 @@ import Button from "react-native-button";
 import { Text, View, StyleSheet, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import firebase from "react-native-firebase";
+import { connect } from "react-redux";
+
 
 import { AppStyles, AppIcon } from "../../AppStyles";
+import { watchOrdersList } from "../../actions";
 
+
+const mapStateToProps = state => ({
+  user: state.auth.user,
+  ordersList: state.app.ordersList,
+});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    watchOrdersList: (uid) => dispatch(watchOrdersList(uid)),
+  };
+}
 class WelcomeScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -14,11 +27,18 @@ class WelcomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      uid: null,
     };
   }
   componentDidMount() {
     this.tryToLoginFirst();
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.user && nextProps.user.uid != prevState.uid) {
+      nextProps.watchOrdersList( nextProps.user.uid);
+      return { uid: nextProps.user.uid };
+    } else return null;
   }
   async tryToLoginFirst() {
     const uid = await AsyncStorage.getItem("@loggedInUser:uid");
@@ -53,6 +73,7 @@ class WelcomeScreen extends React.Component {
     })
   }
   render() {
+    console.log("ordersList====",this.props.ordersList);
     if (this.state.isLoading) {
       return (
         <View style={styles.container} >
@@ -153,4 +174,6 @@ const styles = StyleSheet.create({
   }
 });
 
-export default WelcomeScreen;
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);

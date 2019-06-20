@@ -94,3 +94,4 @@ export const initQuoteState = {
     ],
     multilineHeight: 100,
 }
+
