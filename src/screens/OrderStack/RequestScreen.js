@@ -9,13 +9,13 @@ import firebase from "react-native-firebase";
 
 import Button from "react-native-button";
 
-import { AppStyles, AppIcon } from "../AppStyles";
-import { Configuration } from "../Configuration";
-import { ValidateTypes, FieldTypes, JobTypes, Mpa_Strengths, Stone_Sizes, Slump_Wetness, } from '../Globals';
-import InputField from "../components/InputField";
-import { show_loading, hide_loading } from '../actions';
-import HeaderLeft from "../components/HeaderLeft";
-import HeaderButton from "../components/HeaderButton";
+import { AppStyles, AppIcon } from "../../AppStyles";
+import { Configuration } from "../../Configuration";
+import { ValidateTypes, FieldTypes, JobTypes, Mpa_Strengths, Stone_Sizes, Slump_Wetness, } from '../../Globals';
+import InputField from "../../components/InputField";
+import { show_loading, hide_loading } from '../../actions';
+import HeaderLeft from "../../components/HeaderLeft";
+import HeaderButton from "../../components/HeaderButton";
 
 
 

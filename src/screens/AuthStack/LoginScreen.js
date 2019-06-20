@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import Button from "react-native-button";
 import firebase from "react-native-firebase";
 import AsyncStorage from "@react-native-community/async-storage";
-import { AppStyles } from "../AppStyles";
-import { show_loading, hide_loading } from '../actions';
-import { show_toast } from '../utils/func';
+import { AppStyles } from "../../AppStyles";
+import { show_loading, hide_loading } from '../../actions';
+import { show_toast } from '../../utils/func';
 
 class LoginScreen extends React.Component {
   constructor(props) {

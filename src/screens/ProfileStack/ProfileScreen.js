@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Divider } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import { AppStyles, AppIcon } from "../AppStyles";
-import { Configuration } from "../Configuration";
-import HeaderLeft from "../components/HeaderLeft";
-import HeaderButton from "../components/HeaderButton";
+import { AppStyles, AppIcon } from "../../AppStyles";
+import { Configuration } from "../../Configuration";
+import HeaderLeft from "../../components/HeaderLeft";
+import HeaderButton from "../../components/HeaderButton";
 
 class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({

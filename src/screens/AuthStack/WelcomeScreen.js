@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import firebase from "react-native-firebase";
 
-import { AppStyles, AppIcon } from "../AppStyles";
+import { AppStyles, AppIcon } from "../../AppStyles";
 
 class WelcomeScreen extends React.Component {
   static navigationOptions = {

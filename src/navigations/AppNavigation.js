@@ -5,18 +5,18 @@ import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator }
 import { createReactNavigationReduxMiddleware, createReduxContainer } from "react-navigation-redux-helpers";
 
 
-import LoginScreen from "../screens/LoginScreen";
-import SignupScreen from "../screens/SignupScreen";
-import WelcomeScreen from "../screens/WelcomeScreen";
-import TermsAndConditions from "../screens/TermsAndConditions";
+import LoginScreen from "../screens/AuthStack/LoginScreen";
+import SignupScreen from "../screens/AuthStack/SignupScreen";
+import WelcomeScreen from "../screens/AuthStack/WelcomeScreen";
+import TermsAndConditions from "../screens/AuthStack/TermsAndConditions";
 
-import RequestScreen from "../screens/RequestScreen";
-import OrdersScreen from "../screens/OrdersScreen";
-import QuotesScreen from "../screens/QuotesScreen";
+import RequestScreen from "../screens/OrderStack/RequestScreen";
+import OrdersScreen from "../screens/OrderStack/OrdersScreen";
+import QuotesScreen from "../screens/OrderStack/QuotesScreen";
 
-import ProfileScreen from "../screens/ProfileScreen";
-import EditProfileScreen from "../screens/EditProfileScreen";
-import CardScreen from "../screens/CardScreen";
+import ProfileScreen from "../screens/ProfileStack/ProfileScreen";
+import EditProfileScreen from "../screens/ProfileStack/EditProfileScreen";
+import CardScreen from "../screens/ProfileStack/CardScreen";
 
 import { AppIcon, AppStyles } from "../AppStyles";
 import { Configuration } from "../Configuration";

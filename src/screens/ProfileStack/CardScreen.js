@@ -7,10 +7,10 @@ import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-i
 
 import Button from "react-native-button";
 
-import { AppStyles, AppIcon } from "../AppStyles";
-import { Configuration } from "../Configuration";
-import HeaderLeft from "../components/HeaderLeft";
-import HeaderButton from "../components/HeaderButton";
+import { AppStyles, AppIcon } from "../../AppStyles";
+import { Configuration } from "../../Configuration";
+import HeaderLeft from "../../components/HeaderLeft";
+import HeaderButton from "../../components/HeaderButton";
 
 
 class CardScreen extends React.Component {
