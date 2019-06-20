@@ -1,23 +1,23 @@
 import React from "react";
 import { ScrollView } from "react-native";
 import { connect } from "react-redux";
-import {AccordionList } from 'accordion-collapse-react-native';
+import { AccordionList } from 'accordion-collapse-react-native';
 
 import HeaderLeft from "../../components/HeaderLeft";
 import { ItemHeader, ItemBody } from "../../components/OrderItem";
 
 const mapStateToProps = state => ({
   // user: state.auth.user,
-  ordersList: state.app.ordersList,
+  quotesList: state.app.quotesList,
 });
 const mapDispatchToProps = (dispatch) => {
   return {
-    // watchOrdersList: (uid) => dispatch(watchOrdersList(uid)),
+    // watchquotesList: (uid) => dispatch(watchquotesList(uid)),
   };
 }
-class OrdersScreen extends React.Component {
+class QuotesScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Orders",
+    title: "Quotes",
     headerLeft: <HeaderLeft navigation={navigation} />,
 
   });
@@ -30,15 +30,15 @@ class OrdersScreen extends React.Component {
 
   componentDidMount() {
   }
-  _head = (item) => (<ItemHeader item={item} type="Order"/>);
+  _head = (item) => (<ItemHeader item={item} type="Quote" />);
 
-  _body = (item) => (<ItemBody item={item}  type="Order"/>);
+  _body = (item) => (<ItemBody item={item} type="Quote" />);
 
   render() {
     return (
       <ScrollView>
         <AccordionList
-          list={this.props.ordersList}
+          list={this.props.quotesList}
           header={this._head}
           body={this._body}
         />
@@ -48,4 +48,4 @@ class OrdersScreen extends React.Component {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrdersScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(QuotesScreen);

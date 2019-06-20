@@ -10,9 +10,13 @@ import SignupScreen from "../screens/AuthStack/SignupScreen";
 import WelcomeScreen from "../screens/AuthStack/WelcomeScreen";
 import TermsAndConditions from "../screens/AuthStack/TermsAndConditions";
 
-import RequestScreen from "../screens/OrderStack/RequestScreen";
-import OrdersScreen from "../screens/OrderStack/OrdersScreen";
-import QuotesScreen from "../screens/OrderStack/QuotesScreen";
+import RequestScreen from "../screens/CustomerStack/RequestScreen";
+import OrdersScreen from "../screens/CustomerStack/OrdersScreen";
+import QuotesScreen from "../screens/CustomerStack/QuotesScreen";
+
+// import RequestScreen from "../screens/AdminStack/RequestScreen";
+import OrderReqScreen from "../screens/AdminStack/OrderReqScreen";
+import QuoteReqScreen from "../screens/AdminStack/QuoteReqScreen";
 
 import ProfileScreen from "../screens/ProfileStack/ProfileScreen";
 import EditProfileScreen from "../screens/ProfileStack/EditProfileScreen";
@@ -55,7 +59,7 @@ const AuthStack = createStackNavigator(
 
 
 // ===========================================================================
-//                    OrdersTabNavigator
+//                    CustomerTabNavigator
 // ===========================================================================
 
 const OrdersStack = createStackNavigator(
@@ -111,7 +115,7 @@ const RequestStack = createStackNavigator(
   }
 );
 
-const OrdersTabNavigator = createBottomTabNavigator(
+const CustomerTabNavigator = createBottomTabNavigator(
   {
     OrdersStack: { screen: OrdersStack },
     QuotesStack: { screen: QuotesStack },
@@ -133,6 +137,88 @@ const OrdersTabNavigator = createBottomTabNavigator(
             iconName = AppIcon.images.request;
             break;
 
+        }
+
+        // You can return any component that you like here! We usually use an
+        // icon component from react-native-vector-icons
+        return (
+          <Image
+            style={{
+              tintColor: focused ? AppStyles.color.tint : AppStyles.color.grey, width: 20, height: 20, resizeMode: "contain"
+            }}
+            source={iconName} />
+        );
+      }
+    }),
+    initialLayout: {
+      height: 300
+    },
+    tabBarOptions: {
+      activeTintColor: AppStyles.color.tint,
+      inactiveTintColor: "gray",
+      style: {
+        height: Configuration.home.tab_bar_height
+      }
+    }
+  }
+);
+
+// ===========================================================================
+//                    AdminTabNavigator
+// ===========================================================================
+
+const OrderReqStack = createStackNavigator(
+  {
+    OrderReqScreen: { screen: OrderReqScreen }
+  },
+  {
+    initialRouteName: "OrderReqScreen",
+    headerMode: "float",
+
+    headerLayoutPreset: "center",
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: AppStyles.color.blue,
+      headerTitleStyle: styles.headerTitleStyle,
+      tabBarLabel: 'Order Requests',
+    }),
+    cardStyle: { backgroundColor: "#FFFFFF" }
+  }
+);
+const QuoteReqStack = createStackNavigator(
+  {
+    QuoteReqScreen: { screen: QuoteReqScreen }
+  },
+  {
+    initialRouteName: "QuoteReqScreen",
+    headerMode: "float",
+
+    headerLayoutPreset: "center",
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: AppStyles.color.blue,
+      headerTitleStyle: styles.headerTitleStyle,
+      tabBarLabel: 'Quote Requests',
+    }),
+    cardStyle: { backgroundColor: "#FFFFFF" }
+  }
+);
+
+const AdminTabNavigator = createBottomTabNavigator(
+  {
+    OrderReqStack: { screen: OrderReqStack },
+    QuoteReqStack: { screen: QuoteReqStack },
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        switch (routeName) {
+          case 'OrderReqStack':
+            iconName = AppIcon.images.order;
+            break;
+          case 'QuoteReqStack':
+            iconName = AppIcon.images.quote;
+            break;
         }
 
         // You can return any component that you like here! We usually use an
@@ -269,12 +355,13 @@ const ProfileTabNavigator = createBottomTabNavigator(
 // drawer stack
 const DrawerStack = createDrawerNavigator(
   {
-    OrdersTab: OrdersTabNavigator,
+    CustomerTab: CustomerTabNavigator,
+    AdminTab: AdminTabNavigator,
     ProfileTab: ProfileTabNavigator
   },
   {
     drawerPosition: "left",
-    initialRouteName: "OrdersTab",
+    initialRouteName: "CustomerTab",
     drawerWidth: 200,
     contentComponent: DrawerContainer
   }

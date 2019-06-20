@@ -5,6 +5,32 @@ import { sortByField } from "../utils/func";
 
 let OrderListRef = null;
 let QuoteListRef = null;
+
+export function loged_in(user) {
+    return {
+        type: types.LOGEDIN,
+        user: user
+    }
+}
+
+export function goto_home(user_type) {
+    return {
+        type: types.HOME,
+        user_type: user_type,
+    }
+}
+export function goto_profile() {
+    return {
+        type: types.PROFILE,
+    }
+}
+
+export function logout() {
+    return {
+        type: types.LOGOUT,
+    }
+}
+
 export function show_loading() {
     return {
         type: types.SHOW_LOADING,
@@ -27,13 +53,25 @@ export const setQuotesList = (quotesList) => {
         value: quotesList
     };
 };
-export const watchOrdersList = (uid) => {
+export const stopWatch = () => {
     return function (dispatch) {
-        if (OrderListRef) {
-            OrderListRef.off('value');
-            QuoteListRef.off('value');
+        if (OrderListRef) OrderListRef.off('value');
+        if (QuoteListRef) QuoteListRef.off('value');
+        dispatch(setOrdersList([]));
+        dispatch(setQuotesList([]));
+    }
+}
+export const watchFirebase = (uid, user_type) => {
+    return function (dispatch) {
+        stopWatch();
+        if (user_type == 'Client') {  // admin watch
+            OrderListRef = firebase.database().ref("Order");
+            QuoteListRef = firebase.database().ref("Quote");
+        } else {                     // customer watch
+            OrderListRef = firebase.database().ref("Order").orderByChild('uid').equalTo(uid);
+            QuoteListRef = firebase.database().ref("Quote").orderByChild('uid').equalTo(uid);
         }
-        OrderListRef = firebase.database().ref("Order").orderByChild('uid').equalTo(uid);
+
         OrderListRef.on("value",
             function ({ _value }) {
                 let orders = _value || {}
@@ -47,10 +85,8 @@ export const watchOrdersList = (uid) => {
                 var actionSetOrdersList = setOrdersList(ordersList);
                 dispatch(actionSetOrdersList);
             },
-            function (error) { console.log("watchOrdersList error======", error); }
+            function (error) { alert(error); }
         );
-
-        QuoteListRef = firebase.database().ref("Quote").orderByChild('uid').equalTo(uid);
         QuoteListRef.on("value",
             function ({ _value }) {
                 let quotes = _value || {}
@@ -64,7 +100,7 @@ export const watchOrdersList = (uid) => {
                 var actionSetQuotesList = setQuotesList(quotesList);
                 dispatch(actionSetQuotesList);
             },
-            function (error) { console.log("watchQuotesList error======", error); }
+            function (error) { alert(error); }
         );
     }
 };

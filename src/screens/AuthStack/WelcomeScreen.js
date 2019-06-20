@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 
 import { AppStyles, AppIcon } from "../../AppStyles";
-import { watchOrdersList } from "../../actions";
+import { watchFirebase, loged_in, stopWatch } from "../../actions";
 
 
 const mapStateToProps = state => ({
@@ -16,7 +16,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = (dispatch) => {
   return {
-    watchOrdersList: (uid) => dispatch(watchOrdersList(uid)),
+    watchFirebase: (uid,user_type) => dispatch(watchFirebase(uid,user_type)),
+    stopWatch: () => dispatch(stopWatch()),
+    loged_in: (user) => dispatch(loged_in(user)),
   };
 }
 class WelcomeScreen extends React.Component {
@@ -34,12 +36,19 @@ class WelcomeScreen extends React.Component {
   componentDidMount() {
     this.tryToLoginFirst();
   }
+
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.user && nextProps.user.uid != prevState.uid) {
-      nextProps.watchOrdersList( nextProps.user.uid);
-      return { uid: nextProps.user.uid };
-    } else return null;
+    const { user } = nextProps;
+    const newUid = (user && user.uid) ? user.uid : null;
+    if (newUid == prevState.uid) return null;
+    if (newUid) {
+      nextProps.watchFirebase(newUid, user.user_type);
+    } else {
+      nextProps.stopWatch();
+    }
+    return { uid: newUid };
   }
+
   async tryToLoginFirst() {
     const uid = await AsyncStorage.getItem("@loggedInUser:uid");
     const email = await AsyncStorage.getItem("@loggedInUser:email");
@@ -67,8 +76,7 @@ class WelcomeScreen extends React.Component {
 
     this.setState({ isLoading: false }, () => {
       if (user) {
-        const { navigation } = this.props;
-        navigation.dispatch({ type: "Login", user: user });
+        this.props.loged_in(user);
       }
     })
   }

@@ -3,18 +3,32 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { connect } from 'react-redux';
 import Button from "react-native-button";
 import firebase from "react-native-firebase";
-import AsyncStorage from "@react-native-community/async-storage";
 import { AppStyles } from "../../AppStyles";
-import { show_loading, hide_loading } from '../../actions';
 import { show_toast } from '../../utils/func';
+import { loged_in, show_loading, hide_loading } from "../../actions";
+
+
+const mapStateToProps = state => ({
+  // user: state.auth.user,
+  // ordersList: state.app.ordersList,
+});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loged_in: (user) => dispatch(loged_in(user)),
+    show_loading: () => dispatch(show_loading()),
+    hide_loading: () => dispatch(hide_loading()),
+  };
+}
 
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      email: "aaa@a.com",
-      password: "jhcjhc123"
+      email: "cjrconcretepumping@live.com.au",
+      password: "admin333"
+      // email: "aaa@a.com",
+      // password: "jhcjhc123"
     };
     this.onPressLogin = this.onPressLogin.bind(this);
     this.getUser = this.getUser.bind(this);
@@ -29,7 +43,7 @@ class LoginScreen extends React.Component {
       alert("Please fill out the required fields.");
       return;
     }
-    this.props.dispatch(show_loading());
+    this.props.show_loading();
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -51,17 +65,12 @@ class LoginScreen extends React.Component {
     })
   }
   onSuccess(user) {
-    const { navigation } = this.props;
-    AsyncStorage.setItem("@loggedInUser:uid", user.uid);
-    AsyncStorage.setItem("@loggedInUser:email", user.email);
-    AsyncStorage.setItem("@loggedInUser:password", user.password);
-
-    this.props.dispatch(hide_loading());
+    this.props.hide_loading();
     show_toast("Login Success!");
-    navigation.dispatch({ type: "Login", user: user });
+    this.props.loged_in(user);
   }
   onError(error) {
-    this.props.dispatch(hide_loading());
+    this.props.hide_loading();
     const { message } = error;
     alert(message);
   }
@@ -168,4 +177,4 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white
   }
 });
-export default connect()(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

@@ -2,8 +2,21 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import MenuButton from "./MenuButton";
 import { AppIcon } from "../AppStyles";
+import { connect } from "react-redux";
 
-export default class DrawerContainer extends React.Component {
+import { goto_home, goto_profile, logout } from "../actions";
+
+const mapStateToProps = state => ({
+  user: state.auth.user,
+});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    goto_home: () => dispatch(goto_home()),
+    goto_profile: () => dispatch(goto_profile()),
+    logout: () => dispatch(logout()),
+  };
+}
+class DrawerContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +24,7 @@ export default class DrawerContainer extends React.Component {
     }
   }
   render() {
-    const { navigation } = this.props;
+    const { navigation, goto_home, goto_profile, logout, user } = this.props;
     return (
       <View style={styles.content}>
         <View style={styles.container}>
@@ -21,7 +34,7 @@ export default class DrawerContainer extends React.Component {
             selected={this.state.selected == 'HOME'}
             onPress={() => {
               this.setState({ selected: 'HOME' });
-              navigation.dispatch({ type: "HOME" });
+              goto_home(user.user_type);
               navigation.closeDrawer();
             }}
           />
@@ -31,7 +44,7 @@ export default class DrawerContainer extends React.Component {
             selected={this.state.selected == 'PROFILE'}
             onPress={() => {
               this.setState({ selected: 'PROFILE' });
-              navigation.dispatch({ type: "PROFILE" });
+              goto_profile();
               navigation.closeDrawer();
             }}
           />
@@ -39,7 +52,7 @@ export default class DrawerContainer extends React.Component {
             title="LOG OUT"
             source={AppIcon.images.logout}
             onPress={() => {
-              navigation.dispatch({ type: "Logout" });
+              logout();
               navigation.closeDrawer();
             }}
           />
@@ -62,3 +75,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   }
 });
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerContainer);

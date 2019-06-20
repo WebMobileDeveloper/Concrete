@@ -23,6 +23,7 @@ DerivedData
 project.xcworkspace
 
 ios/Pods
+ios/Concrete/GoogleService-info.plist
 # Android/IntelliJ
 #
 build/

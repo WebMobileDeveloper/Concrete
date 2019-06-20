@@ -4,13 +4,24 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Button from "react-native-button";
 import firebase from "react-native-firebase";
 import { connect } from 'react-redux';
-import AsyncStorage from "@react-native-community/async-storage";
 
 import { AppStyles } from "../../AppStyles";
 import { ValidateTypes, FieldTypes } from '../../Globals';
 import InputField from "../../components/InputField";
-import { show_loading, hide_loading } from '../../actions';
 import { show_toast } from '../../utils/func';
+import {loged_in, show_loading, hide_loading} from "../../actions";
+
+const mapStateToProps = state => ({
+  // user: state.auth.user,
+  // ordersList: state.app.ordersList,
+});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loged_in: (user) => dispatch(loged_in(user)),
+    show_loading: () => dispatch(show_loading()),
+    hide_loading: () => dispatch(hide_loading()),
+  };
+}
 
 class SignupScreen extends React.Component {
   constructor(props) {
@@ -51,7 +62,7 @@ class SignupScreen extends React.Component {
     }
     const { fullname, phone, email, password } = this.state.fields;
 
-    this.props.dispatch(show_loading());
+    this.props.show_loading();
     firebase
       .auth()
       .createUserWithEmailAndPassword(email.value, password.value)
@@ -62,7 +73,7 @@ class SignupScreen extends React.Component {
           email: email.value,
           phone: phone.value,
           password: password.value,
-          user_type: 'client'
+          user_type: 'Customer',
         };
         self.saveUser(user);
       })
@@ -81,17 +92,12 @@ class SignupScreen extends React.Component {
     });
   }
   onSuccess(user) {
-    const { navigation } = this.props;
-    AsyncStorage.setItem("@loggedInUser:uid", user.uid);
-    AsyncStorage.setItem("@loggedInUser:email", user.email);
-    AsyncStorage.setItem("@loggedInUser:password", user.password);
-
-    this.props.dispatch(hide_loading());
+    this.props.hide_loading();
     show_toast("Signup Success!");
-    navigation.dispatch({ type: "Login", user: user });
+    this.props.loged_in(user);
   }
   onError(error) {
-    this.props.dispatch(hide_loading())
+    this.props.hide_loading();
     const { code, message } = error;
     alert(message);
   }
@@ -170,4 +176,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect()(SignupScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen);
