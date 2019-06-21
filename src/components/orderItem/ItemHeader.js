@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { Badge } from "react-native-elements";
 import firebase from "react-native-firebase";
 
-import { AppStyles } from "../AppStyles";
-import { MomentFunc } from "../utils/func"
-import { ACTION_TYPES } from "../Globals";
+import { AppStyles } from "../../AppStyles";
+import { MomentFunc } from "../../utils/func"
+import { ACTION_TYPES } from "../../Globals";
 const mapStateToProps = state => ({});
 const mapDispatchToProps = (dispatch) => { return {}; }
 

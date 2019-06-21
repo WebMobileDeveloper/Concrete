@@ -1,5 +1,4 @@
 import React from "react";
-import { ScrollView, Text } from "react-native";
 import { connect } from "react-redux";
 import Accordion from 'react-native-collapsible/Accordion';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

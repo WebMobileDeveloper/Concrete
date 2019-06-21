@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import HeaderLeft from "../../components/HeaderLeft";
-import RequestList from "../../components/RequestList";
+import RequestList from "../../components/orderItem/RequestList";
 
 const mapStateToProps = state => ({ ordersList: state.app.ordersList, });
 const mapDispatchToProps = (dispatch) => { return {}; }
@@ -15,6 +15,7 @@ class OrderReqScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    console.log("OrderReqScreen Constructor");
   }
 
   render() {

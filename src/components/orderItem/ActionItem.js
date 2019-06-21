@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View, Alert, } from "react-native";
 import Button from "react-native-button";
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import firebase from "react-native-firebase";
-
-
-import { AppStyles } from "../AppStyles";
-import { ACTION_TYPES } from "../Globals";
 import { TextInput } from "react-native-gesture-handler";
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+
+
+import { AppStyles } from "../../AppStyles";
+import { ACTION_TYPES } from "../../Globals";
 
 const statusList = {
     Order: [ACTION_TYPES.REQUIRED, ACTION_TYPES.IN_REVIEWING, ACTION_TYPES.DECLINED, ACTION_TYPES.PAYMENT_REQUIRED, ACTION_TYPES.PAID, ACTION_TYPES.COMPLETED],

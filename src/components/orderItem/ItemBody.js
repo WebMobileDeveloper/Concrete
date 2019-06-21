@@ -2,8 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View, Animated, } from "react-native";
 import { Divider } from 'react-native-elements';
 
-import { AppStyles } from "../AppStyles";
-import { MomentFunc } from "../utils/func"
+import { AppStyles } from "../../AppStyles";
+import { MomentFunc } from "../../utils/func"
 import ActionItem from "./ActionItem";
 
 

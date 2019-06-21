@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import HeaderLeft from "../../components/HeaderLeft";
-import RequestList from "../../components/RequestList";
+import RequestList from "../../components/orderItem/RequestList";
 
 const mapStateToProps = state => ({ quotesList: state.app.quotesList, });
 const mapDispatchToProps = (dispatch) => { return {}; }
