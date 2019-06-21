@@ -95,3 +95,12 @@ export const initQuoteState = {
     multilineHeight: 100,
 }
 
+export const ACTION_TYPES = {
+    REQUIRED: "Required",
+    IN_REVIEWING: "In Reviewing",
+    DECLINED: "Declined",
+    ACCEPETD: "Accepted",
+    PAYMENT_REQUIRED: "Payment Required",
+    PAID: "Paid",
+    COMPLETED: "Completed",
+}

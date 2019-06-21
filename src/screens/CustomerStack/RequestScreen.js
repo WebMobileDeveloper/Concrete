@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { StyleSheet, Text, View, TextInput, Alert } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Divider } from 'react-native-elements';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import RadioForm from 'react-native-simple-radio-button';
 import ModalPicker from 'react-native-modal-picker-improved';
 import firebase from "react-native-firebase";
 
@@ -15,8 +15,7 @@ import { ValidateTypes, FieldTypes, JobTypes, Mpa_Strengths, Stone_Sizes, Slump_
 import InputField from "../../components/InputField";
 import { show_loading, hide_loading } from '../../actions';
 import HeaderLeft from "../../components/HeaderLeft";
-import HeaderButton from "../../components/HeaderButton";
-
+import { ACTION_TYPES } from "../../Globals";
 
 
 class RequestScreen extends React.Component {
@@ -111,11 +110,12 @@ class RequestScreen extends React.Component {
     }
     //==============================================
     //  add additionail data
-    data.status = 'Required';
+    data.status = ACTION_TYPES.REQUIRED;
     data.requestTime = firebase.database.ServerValue.TIMESTAMP;
     data.lastUpdateTime = firebase.database.ServerValue.TIMESTAMP;
     data.customerBadge = 0;
     data.clientBadge = 1;
+    data.history = [{ action: ACTION_TYPES.REQUIRED, time: firebase.database.ServerValue.TIMESTAMP }]
     //==============================================
     Alert.alert(
       'Confirm',

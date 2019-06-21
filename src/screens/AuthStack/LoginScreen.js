@@ -26,8 +26,9 @@ class LoginScreen extends React.Component {
     this.state = {
       loading: true,
       email: "cjrconcretepumping@live.com.au",
-      password: "admin333"
+      password: "admin333",
       // email: "aaa@a.com",
+      // email: "bbb@b.com",
       // password: "jhcjhc123"
     };
     this.onPressLogin = this.onPressLogin.bind(this);

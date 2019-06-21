@@ -74,6 +74,7 @@ export const watchFirebase = (uid, user_type) => {
 
         OrderListRef.on("value",
             function ({ _value }) {
+                // console.log("child_added snapshot.key, snapshot.val", snapshot.key, snapshot.val());
                 let orders = _value || {}
                 let ordersList = [];
                 for (key in orders) {
@@ -87,6 +88,22 @@ export const watchFirebase = (uid, user_type) => {
             },
             function (error) { alert(error); }
         );
+        // OrderListRef.on("child_changed",
+        //     function (snapshot) {
+        //         console.log("child_changed snapshot.key, snapshot.val", snapshot.key, snapshot.val());
+        //         // let orders = _value || {}
+        //         // let ordersList = [];
+        //         // for (key in orders) {
+        //         //     item = orders[key];
+        //         //     item.key = key;
+        //         //     ordersList.push(item);
+        //         // }
+        //         // ordersList = sortByField(ordersList, "requestTime");
+        //         // var actionSetOrdersList = setOrdersList(ordersList);
+        //         // dispatch(actionSetOrdersList);
+        //     },
+        //     function (error) { alert(error); }
+        // );
         QuoteListRef.on("value",
             function ({ _value }) {
                 let quotes = _value || {}

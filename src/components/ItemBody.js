@@ -1,80 +1,40 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableHighlight, View, Animated, } from "react-native";
-import { ListItem, Icon, Divider, Badge, withBadge } from 'react-native-elements';
+import { StyleSheet, Text, View, Animated, } from "react-native";
+import { Divider } from 'react-native-elements';
+
 import { AppStyles } from "../AppStyles";
 import { MomentFunc } from "../utils/func"
-import firebase from "react-native-firebase";
+import ActionItem from "./ActionItem";
 
-export class ItemHeader extends React.Component {
+
+class ItemBody extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // index: -1,
-      // expand: false,
-    }
+    this.state = {}
   }
-  // onExpandPress(index) {
-  //   if (this.state.index == index) {
-  //     this.setState({ expand: !this.state.expand })
-  //   } else {
-  //     this.setState({ index: index, expand: true })
-  //   }
-  // }
+
+
   render() {
-    const { item, type } = this.props;
-    const badgeDisplay = item.customerBadge ? 'flex' : 'none';
-    return (
-      <ListItem
-        containerStyle={[styles.container, { backgroundColor: AppStyles.color.background }]}
-        // contentContainerStyle={{ backgroundColor: 'blue' }}
-        // leftIcon={{
-        //   name: "angle-down",
-        //   type: "font-awesome",
-        //   color: AppStyles.color.blue,
-        //   size: 30,
-        //   // onPress={() => this.onExpandPress(i)}
-        // }}
-        badge={{
-          status: "error",
-          value: item.customerBadge,
-          containerStyle: { display: badgeDisplay, width: '10%', position: 'absolute', right: 0 }
-        }}
-        title={item.title}
-        titleStyle={{ fontWeight: '500', textAlign: 'center' }}
-        subtitle={
-          < View style={styles.subtitleView} >
-            <Text style={styles.subText}>{type + " ID: " + item.key}</Text>
-            <Text style={styles.subText}>{"Status:   " + item.status + "  (" + MomentFunc.fromNow(item.lastUpdateTime) + ")"}</Text>
-          </View >
-        }
-      />
-    );
-  }
-}
-
-
-
-export class ItemBody extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    const { item, type } = this.props;
-    if (item.customerBadge) {
-      firebase.database().ref(type + "/" + item.key + "/customerBadge").set(0);
-    }
-  }
-  render() {
-    const { item, type } = this.props;
+    const { item, order_type, user_type, isActive } = this.props;
     return (
       <FadeInView>
         {/* ==========  - Order Information ==================== */}
-        <Title title={"- " + type + " Infomation"} />
-        <RenderItem title={type + " Title"} value={item.title} />
-        <RenderItem title={type + " ID"} value={item.key} />
+        <Title title={"- " + order_type + " Infomation"} />
+        <RenderItem title={order_type + " Title"} value={item.title} />
+        <RenderItem title={order_type + " ID"} value={item.key} />
         <RenderItem title="Current Status" value={item.status} color='#cc0000' />
-        <RenderItem title={type + " Time"} value={MomentFunc.toDate(item.requestTime)} />
+        <RenderItem title={order_type + " Time"} value={MomentFunc.toDate(item.requestTime)} />
         <RenderItem title="Last Updated" value={MomentFunc.fromNow(item.lastUpdateTime)} />
+        <Divider style={styles.divider} />
+
+        {/* ==========  - Action history ==================== */}
+        <Title title={"- Action history for this request"} />
+        {item.history.map((action, index) => (
+          <RenderItem title={action.action} value={MomentFunc.toDate(action.time)} key={index} more={action.note} />
+        ))}
+
+        <ActionItem item={item} order_type={order_type} user_type={user_type} isActive={isActive} />
+
         <Divider style={styles.divider} />
 
         {/* ===================== - Delivery Details =================================== */}
@@ -83,6 +43,8 @@ export class ItemBody extends React.Component {
         <RenderItem title="Delivery Time" value={item.delivery_time} />
         <RenderItem title="Delivery Address" value={item.delivery_address} />
         <RenderItem title="Delivery Suburb" value={item.suburb} />
+
+
         <Divider style={styles.divider} />
 
 
@@ -111,20 +73,27 @@ export class ItemBody extends React.Component {
 
         {/* ===================== - Note =================================== */}
         <Title title="- Others" />
-        <RenderItem title="Note" value={item.note} />
+        <RenderItem title="Note" value={item.note} direction="column" />
         <Divider style={styles.divider} />
       </FadeInView>
     );
   }
 }
 
-
-const RenderItem = ({ title, value, direction, color = AppStyles.color.categoryTitle }) => {
+const RenderItem = ({ title, value, direction, color, more }) => {
+  color = color || AppStyles.color.categoryTitle
   direction = direction || 'row';
   return (
-    <View style={[styles.detailWrapper, { flexDirection: direction }]}>
-      <Text style={styles.detailTitle}>{title}</Text>
-      <Text style={[styles.contentStyle, { color: color }]}>{value}</Text>
+    <View style={styles.detailWrapper}>
+      <View style={{ flex: 1, flexDirection: direction }}>
+        <Text style={styles.detailTitle}>{title}</Text>
+        <Text style={[styles.contentStyle, { color: color }]}>{value}</Text>
+      </View>
+      {more && <View style={{ flex: 1, flexDirection: "row", marginTop: 10, }}>
+        <Text style={[styles.detailTitle, { textAlign: 'right', width: '10%', paddingRight: 10 }]}>*  </Text>
+        <Text style={[styles.contentStyle, { color: color, width: '90%' }]}>{more}</Text>
+      </View>
+      }
     </View >
   )
 }
@@ -158,20 +127,7 @@ class FadeInView extends React.Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    borderBottomColor: AppStyles.color.description,
-    borderBottomWidth: 1,
-  },
-  subtitleView: {
-    flexDirection: 'column',
-    paddingTop: 5,
-    // width: '90%',
-  },
-  subText: {
-    // width: '100%',
-    // paddingRight: 20,
-    paddingVertical: 5,
-  },
+
 
   // ======================
   //        item details style
@@ -185,6 +141,7 @@ const styles = StyleSheet.create({
   },
   detailWrapper: {
     flex: 1,
+    width: '100%',
     marginBottom: 5,
   },
   detailTitle: {
@@ -198,5 +155,17 @@ const styles = StyleSheet.create({
   contentStyle: {
     marginTop: 3,
   },
+  buttonContainer: {
+    width: AppStyles.buttonWidth.main,
+    backgroundColor: AppStyles.color.tint,
+    borderRadius: AppStyles.borderRadius.main,
+    padding: 10,
+    marginTop: 30,
+    marginHorizontal: '15%',
+  },
+  buttonText: {
+    color: AppStyles.color.white
+  },
 });
 
+export default ItemBody;
