@@ -49,7 +49,7 @@ export default nav = (state = initialNavState, action) => {
             break;
         case types.LOGOUT:
             try {
-                firebase.auth().signOut();
+                firebase.auth().signOut();               
                 nextState = RootNavigator.router.getStateForAction(
                     NavigationActions.navigate({
                         routeName: "AuthStack",
@@ -58,7 +58,6 @@ export default nav = (state = initialNavState, action) => {
                     state
                 );
             } catch (e) {
-                console.log(e);
             }
             break;
         default:

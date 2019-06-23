@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import HeaderLeft from "../../components/HeaderLeft";
 import RequestList from "../../components/orderItem/RequestList";
 
-const mapStateToProps = state => ({ ordersList: state.app.ordersList, });
+const mapStateToProps = state => ({ list: state.app.list.Order, });
 const mapDispatchToProps = (dispatch) => { return {}; }
 
 class OrdersScreen extends React.Component {
@@ -20,7 +20,7 @@ class OrdersScreen extends React.Component {
 
   render() {
     return (
-      <RequestList items={this.props.ordersList} user_type="Customer" order_type="Order" />
+      <RequestList list={this.props.list} user_type="Customer" order_type="Order" navigation={this.props.navigation}/>
     );
   }
 }

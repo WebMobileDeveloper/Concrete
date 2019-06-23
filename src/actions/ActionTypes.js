@@ -11,3 +11,5 @@ export const SET_QUOTES_LIST = "SET_QUOTES_LIST";
 
 export const HOME = "HOME";
 export const PROFILE = "PROFILE";
+
+export const SET_DETAIL_ID = "SET_DETAIL_ID";

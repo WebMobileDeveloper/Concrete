@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = (dispatch) => {
   return {
-    watchFirebase: (uid,user_type) => dispatch(watchFirebase(uid,user_type)),
+    // watchFirebase: (uid,user_type) => dispatch(watchFirebase(uid,user_type)),
     stopWatch: () => dispatch(stopWatch()),
     loged_in: (user) => dispatch(loged_in(user)),
   };
@@ -30,24 +30,26 @@ class WelcomeScreen extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      uid: null,
+      // uid: null,
     };
   }
   componentDidMount() {
     this.tryToLoginFirst();
   }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { user } = nextProps;
-    const newUid = (user && user.uid) ? user.uid : null;
-    if (newUid == prevState.uid) return null;
-    if (newUid) {
-      nextProps.watchFirebase(newUid, user.user_type);
-    } else {
-      nextProps.stopWatch();
-    }
-    return { uid: newUid };
+  componentWillUnmount() {
+    this.props.stopWatch();
   }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   const { user } = nextProps;
+  //   const newUid = (user && user.uid) ? user.uid : null;
+  //   if (newUid == prevState.uid) return null;
+  //   if (newUid) {
+  //     nextProps.watchFirebase(newUid, user.user_type);
+  //   } else {
+  //     nextProps.stopWatch();
+  //   }
+  //   return { uid: newUid };
+  // }
 
   async tryToLoginFirst() {
     const uid = await AsyncStorage.getItem("@loggedInUser:uid");

@@ -33,27 +33,17 @@ class ActionItem extends React.Component {
         this._renderButton = this._renderButton.bind(this);
     }
     static getDerivedStateFromProps(nextProps, prevState) {
-        const { isActive, item, user_type, order_type } = nextProps;
+        const { item, user_type, order_type } = nextProps;
         let newState = null;
-        if (isActive != prevState.isActive) {
-            newState = newState || {}
-            newState.isActive = isActive;
+        if (item && JSON.stringify(item) != JSON.stringify(prevState.item)) {
+            newState = newState || {};
+            newState.item = item;
             newState.tempStatus = item.status;
             newState.multilineHeight = 100;
             newState.note = '';
-        }
-        if (user_type != prevState.user_type) {
-            newState = newState || {};
             newState.user_type = user_type;
-        }
-        if (order_type != prevState.order_type) {
-            newState = newState || {};
             newState.order_type = order_type;
             newState.list = statusList[order_type];
-        }
-        if (item && JSON.stringify(item) != JSON.stringify(prevState.item)) {
-            newState = newState || {};
-            newState.item = { ...item };
         }
         return newState;
     }
@@ -184,6 +174,7 @@ class ActionItem extends React.Component {
                     onContentSizeChange={(event) => {
                         this.setState({ multilineHeight: Math.max(100, event.nativeEvent.contentSize.height) })
                     }}
+                    value={this.state.note}
                     onChangeText={(note) => this.setState({ note })} />
 
                 <Button

@@ -22,9 +22,12 @@ import ProfileScreen from "../screens/ProfileStack/ProfileScreen";
 import EditProfileScreen from "../screens/ProfileStack/EditProfileScreen";
 import CardScreen from "../screens/ProfileStack/CardScreen";
 
+import DetailsScreen from "../screens/DetailsScreen";
+
 import { AppIcon, AppStyles } from "../AppStyles";
 import { Configuration } from "../Configuration";
 import DrawerContainer from "../components/DrawerContainer";
+
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -64,7 +67,8 @@ const AuthStack = createStackNavigator(
 
 const OrdersStack = createStackNavigator(
   {
-    OrdersScreen: { screen: OrdersScreen }
+    OrdersScreen: { screen: OrdersScreen },
+    OrderDetailsScreen: { screen: DetailsScreen },
   },
   {
     initialRouteName: "OrdersScreen",
@@ -81,7 +85,8 @@ const OrdersStack = createStackNavigator(
 );
 const QuotesStack = createStackNavigator(
   {
-    QuotesScreen: { screen: QuotesScreen }
+    QuotesScreen: { screen: QuotesScreen },
+    QuoteDetailsScreen: { screen: DetailsScreen },
   },
   {
     initialRouteName: "QuotesScreen",
@@ -169,7 +174,8 @@ const CustomerTabNavigator = createBottomTabNavigator(
 
 const OrderReqStack = createStackNavigator(
   {
-    OrderReqScreen: { screen: OrderReqScreen }
+    OrderReqScreen: { screen: OrderReqScreen },
+    OrderReqDetailsScreen: { screen: DetailsScreen }
   },
   {
     initialRouteName: "OrderReqScreen",
@@ -186,7 +192,8 @@ const OrderReqStack = createStackNavigator(
 );
 const QuoteReqStack = createStackNavigator(
   {
-    QuoteReqScreen: { screen: QuoteReqScreen }
+    QuoteReqScreen: { screen: QuoteReqScreen },
+    QuoteReqDetailsScreen: { screen: DetailsScreen },
   },
   {
     initialRouteName: "QuoteReqScreen",

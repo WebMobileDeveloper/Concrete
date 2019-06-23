@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import HeaderLeft from "../../components/HeaderLeft";
 import RequestList from "../../components/orderItem/RequestList";
 
-const mapStateToProps = state => ({ quotesList: state.app.quotesList, });
+const mapStateToProps = state => ({ list: state.app.list.Quote, });
 const mapDispatchToProps = (dispatch) => { return {}; }
-
 
 class QuoteReqScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -21,7 +20,7 @@ class QuoteReqScreen extends React.Component {
 
   render() {
     return (
-      <RequestList items={this.props.quotesList} user_type="Client" order_type="Quote" />
+      <RequestList list={this.props.list} user_type="Client" order_type="Quote" navigation={this.props.navigation} />
     );
   }
 }

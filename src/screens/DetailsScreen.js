@@ -1,23 +1,36 @@
 import React from "react";
-import { StyleSheet, Text, View, Animated, } from "react-native";
+import { StyleSheet, Text, View, Animated, ScrollView } from "react-native";
+import { connect } from 'react-redux';
 import { Divider } from 'react-native-elements';
 
-import { AppStyles } from "../../AppStyles";
-import { MomentFunc } from "../../utils/func"
-import ActionItem from "./ActionItem";
+import { AppStyles } from "../AppStyles";
+import { MomentFunc } from "../utils/func"
+import ActionItem from "../components/orderItem/ActionItem";
 
 
-class ItemBody extends React.Component {
+const mapStateToProps = ({ app: { list, ids } }) => ({
+  list: list,
+  ids: ids
+});
+const mapDispatchToProps = (dispatch) => { return {}; }
+
+class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {}
-  }
-
+  }  
 
   render() {
-    const { item, order_type, user_type, isActive } = this.props;
+    const { list, ids, } = this.props;
+    const { order_type, user_type } = this.props.navigation.state.params;
+    const key = ids[order_type];
+    const item = list[order_type][key];
+    item.key = key;
     return (
-      <FadeInView>
+      <ScrollView style={{
+        backgroundColor: AppStyles.color.LIGHTCYAN,
+        paddingHorizontal: 20,
+      }}>
         {/* ==========  - Order Information ==================== */}
         <Title title={"- " + order_type + " Infomation"} />
         <RenderItem title={order_type + " Title"} value={item.title} />
@@ -33,7 +46,7 @@ class ItemBody extends React.Component {
           <RenderItem title={action.action} value={MomentFunc.toDate(action.time)} key={index} more={action.note} />
         ))}
 
-        <ActionItem item={item} order_type={order_type} user_type={user_type} isActive={isActive} />
+        <ActionItem item={item} order_type={order_type} user_type={user_type} />
 
         <Divider style={styles.divider} />
 
@@ -75,7 +88,7 @@ class ItemBody extends React.Component {
         <Title title="- Others" />
         <RenderItem title="Note" value={item.note} direction="column" />
         <Divider style={styles.divider} />
-      </FadeInView>
+      </ScrollView>
     );
   }
 }
@@ -168,4 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemBody;
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsScreen);
