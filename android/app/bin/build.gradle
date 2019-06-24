@@ -102,7 +102,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.concrete"
+        applicationId "com.concrete.direct"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

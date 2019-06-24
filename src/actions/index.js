@@ -78,6 +78,7 @@ export const watchFirebase = (user) => {
     const { uid, user_type } = user;
 
     return function (dispatch) {
+        stopWatch();
         dispatch({
             type: types.LOGEDIN,
             user: user

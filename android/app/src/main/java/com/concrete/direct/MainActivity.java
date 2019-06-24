@@ -1,4 +1,4 @@
-package com.concrete;
+package com.concrete.direct;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
